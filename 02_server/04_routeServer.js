@@ -19,4 +19,4 @@ server.listen(port,(err)=>{
         return console.log(err.message);
     }
     console.log(`sercer running on port ${port}`);
-})
+});
