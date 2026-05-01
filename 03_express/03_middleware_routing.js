@@ -33,5 +33,5 @@ app.listen(port,(err)=>{
     if(err){
         return console.log(err.message);
     }
-    console.log(`sercer running on port ${port}`);
+    console.log(`server running on port ${port}`);
 });
