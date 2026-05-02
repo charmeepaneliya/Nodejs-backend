@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Edit user</title>
+</head>
+<body>
+
+    <h1 class="text-center mt-5">Edit user</h1>
+
+    <form class="text-center mt-4" action="/edit/<%=student.id %>" method="post">
+        <input class="p-2" type="text" name="name" value="<%= student.name %>" required>
+        <button class="btn btn-success" type="submit">Update</button>
+    </form>
+    
+</body>
+</html>

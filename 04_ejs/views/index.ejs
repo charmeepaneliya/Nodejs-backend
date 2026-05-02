@@ -12,12 +12,20 @@
             <h1 class="text-center mb-3">Home Page</h1>
 
     <ul class="list-group p-4">
-    <% studentList.forEach((s) => { %>
-        <li class="list-group-item text-center "><%= s.name %></li>
-    <% }) %>
-</ul>
+        <% studentList.forEach((s) => { %>
+            <li class="list-group-item text-center ">
+                <span class="me-5"><%= s.name %></span>
+                    <a href="/edit/<%=s.id%>" class="btn btn-warning btn-sm me-2">Edit</a>
+                    <a href="/delete/<%=s.id%>" class="btn btn-danger btn-sm me-2">Delete</a>
+                <div>
 
-<a class="text-center btn btn-primary mb-3" href="/add">Add</a>
+                </div>
+            </li>
+        <% }) %>
+    </ul>
+
+        <a class="text-center btn btn-primary mb-3" href="/add">Add</a>
+        
         </div>
         
     </div>
