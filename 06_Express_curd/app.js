@@ -33,6 +33,18 @@ app.get("/taskList", (req, res, next) => {
     .json({ message: true, message: "task data fetch successfully", taskList });
 });
 
+app.get("/task/:id",(req,res,next)=>{
+  const id = Number(req.params.id);
+ 
+  const task = taskList.find((t) => t.id === id);
+
+  if(task.length === 0){
+    return res.status(404).json({success:true,message:"no taskData found with this id"});
+  }
+  res.status(200).json({success:true,message:"task found",task});
+
+});
+
 app.use((req, res, next) => {
   return next(new HttpError("request route not found", 404));
 });
