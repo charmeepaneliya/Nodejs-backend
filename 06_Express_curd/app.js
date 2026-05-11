@@ -45,6 +45,22 @@ app.get("/task/:id",(req,res,next)=>{
 
 });
 
+//create
+
+app.post("/addTask",(req,res,next)=>{
+  if(!task || !description){
+    return next(new HttpError("task or description are required",404));
+  }
+
+  const newTask = {
+    id:new Date().getTime(),
+    task,
+    description
+  };
+  taskList.push(newTask);
+  res.status(201).json({success:true,message:"new Task data added successfully",newTask});
+});
+
 app.use((req, res, next) => {
   return next(new HttpError("request route not found", 404));
 });
