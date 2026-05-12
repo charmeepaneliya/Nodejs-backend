@@ -72,7 +72,7 @@ app.post("/addTask", (req, res, next) => {
 
 //update using patch partially update only user defined field from body will be update or reset will remain as it is
 
-app.patch("/updateTask/id:", (req, res, next) => {
+app.patch("/updateTask/:id", (req, res, next) => {
   const id = Number(req.params.id);
 
   const taskData = taskList.find((t) => t.id === id);
@@ -106,7 +106,7 @@ app.patch("/updateTask/id:", (req, res, next) => {
 
 //PUT method
 
-app.put("/updateTask/id:", (req, res, next) => {
+app.put("/updateTask/:id", (req, res, next) => {
   const id = Number(req.params.id);
 
   const taskDataIndex = taskList.findIndex((t) => {
@@ -136,7 +136,7 @@ app.put("/updateTask/id:", (req, res, next) => {
 
 //delete
 
-app.delete("/task/id:",(req,res,next)=>{
+app.delete("/task/:id",(req,res,next)=>{
   const id = Number(req.params.id);
 
   const Index = taskList.findIndex((t)=>(t.id === id));
