@@ -145,7 +145,7 @@ app.delete("/task/:id",(req,res,next)=>{
     return next(new HttpError("task not found with this id",404));
   }
 
-  taskList.splice(indexe,1);
+  taskList.splice(index,1);
 
   res.status(200).json({success:true,message:"task deleted successfully"});
 });
