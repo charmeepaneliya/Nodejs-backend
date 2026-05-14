@@ -110,7 +110,7 @@ app.put("/updateTask/:id", (req, res, next) => {
   const id = Number(req.params.id);
 
   const taskDataIndex = taskList.findIndex((t) => t.id === id);
-  });
+  
 
   if (taskDataIndex === -1) {
     return next(new HttpError("task data with this id not found", 404));
@@ -123,7 +123,7 @@ app.put("/updateTask/:id", (req, res, next) => {
   // }
 
   //copying old data
-  
+
   taskList[taskDataIndex] = { ...taskList[taskDataIndex], task, description };
 
   res
@@ -133,7 +133,7 @@ app.put("/updateTask/:id", (req, res, next) => {
       message: "task data updated successfully",
       updatedTask: taskList[taskDataIndex],
     });
-
+  });
 
 //delete
 
