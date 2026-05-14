@@ -109,8 +109,7 @@ app.patch("/updateTask/:id", (req, res, next) => {
 app.put("/updateTask/:id", (req, res, next) => {
   const id = Number(req.params.id);
 
-  const taskDataIndex = taskList.findIndex((t) => {
-    t.id === id;
+  const taskDataIndex = taskList.findIndex((t) => t.id === id);
   });
 
   if (taskDataIndex === -1) {
@@ -119,10 +118,12 @@ app.put("/updateTask/:id", (req, res, next) => {
 
   const { task, description } = req.body;
 
-  if (!task || !description4) {
-    return next(new HttpError("task or description is required", 400));
-  }
+  // if (!task || !description) {
+  //   return next(new HttpError("task or description is required", 400));
+  // }
 
+  //copying old data
+  
   taskList[taskDataIndex] = { ...taskList[taskDataIndex], task, description };
 
   res
@@ -132,7 +133,7 @@ app.put("/updateTask/:id", (req, res, next) => {
       message: "task data updated successfully",
       updatedTask: taskList[taskDataIndex],
     });
-});
+
 
 //delete
 
@@ -145,7 +146,7 @@ app.delete("/task/:id",(req,res,next)=>{
     return next(new HttpError("task not found with this id",404));
   }
 
-  taskList.splice(index,1);
+  taskList.splice(Index,1);
 
   res.status(200).json({success:true,message:"task deleted successfully"});
 });
