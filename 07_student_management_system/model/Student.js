@@ -18,19 +18,21 @@ const studentSchema = new mongoose.Schema({
     },
     course: {
         type: String,
-        enum: ["fullStack","UI/UX","Graphic design","Data secience"],
+        enum: ["fullStack","UI/UX","Graphic design","Data science"],
         required: true,
     },
     isActive: {
         type: String,
-        enum: ["active","panding","suspend","hold"],
+        enum: ["active","pending","suspend","hold"],
         default: "active",
     },
     mobileNumber: {
         type: Number,
-        min: 10,
+        minlength: 10,
         required: true,
     },
 });
 
 const Student = mongoose.model("studentData",studentSchema);
+
+export default Student;

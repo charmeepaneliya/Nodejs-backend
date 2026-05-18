@@ -3,10 +3,17 @@ import express from "express";
 import HttpError from "./middleware/httpError.js";
 import connectDB from "./config/db.js";
 
+import studentRoutes from "./routes/studentRoutes.js";
+
 // import { message } from "statuses";
 // import { error } from "node:console";
 
+
+
 const app = express();
+
+app.use(express.json());
+app.use("/", studentRoutes);
 
 app.use("/", (req, res) => {
   res.json({ message: "hello from server" });
