@@ -193,27 +193,36 @@ DELETE /api/employees/:id
 ### Add Employee API
 
 ![Add Employee]
-(c:\Users\CHARMEE PANELIYA\Pictures\Screenshots\Screenshot 2026-05-21 112158.png),
-c:\Users\CHARMEE PANELIYA\Pictures\Screenshots\Screenshot 2026-05-21 112402.png
+<img width="892" height="847" alt="Screenshot 2026-05-21 112158" src="https://github.com/user-attachments/assets/a961592a-01eb-4a4f-830f-13b67f2841dc" />
+
+<img width="1337" height="861" alt="Screenshot 2026-05-21 112402" src="https://github.com/user-attachments/assets/a85d36fd-f449-4a2b-a6ab-cc9ddf44b4c1" />
+
 
 ### Get All Employees API
 
 ![Get All Employees]
-(c:\Users\CHARMEE PANELIYA\Pictures\Screenshots\Screenshot 2026-05-21 112649.png)
+<img width="940" height="889" alt="Screenshot 2026-05-21 112649" src="https://github.com/user-attachments/assets/00e9d77a-405e-4f1f-aac5-ac5f51c4e398" />
+
 
 ### Update Employee API
 
-![Update Employee](./images/update-employee.png)
+<img width="896" height="826" alt="Screenshot 2026-05-21 120055" src="https://github.com/user-attachments/assets/3816ea30-c696-43c1-ac9c-1aedc37251a7" />
+
 
 ### Delete Employee API
 
 ![Delete Employee]
-(c:\Users\CHARMEE PANELIYA\Pictures\Screenshots\Screenshot 2026-05-21 112731.png)
+<img width="911" height="803" alt="Screenshot 2026-05-21 112731" src="https://github.com/user-attachments/assets/6ae540a5-851d-4778-a935-5945f3a6f631" />
+
 
 ### Delete All Employee API
 
 ![Delete Employee]
-(c:\Users\CHARMEE PANELIYA\Pictures\Screenshots\Screenshot 2026-05-21 112816.png)
+<img width="897" height="813" alt="Screenshot 2026-05-21 112816" src="https://github.com/user-attachments/assets/d77ce671-3dab-4082-911a-be53e98ae705" />
+
+<img width="1337" height="703" alt="Screenshot 2026-05-21 112834" src="https://github.com/user-attachments/assets/882c3140-2c0f-4ac2-a8c5-c9bd5949c9e4" />
+
+
 
 
 
