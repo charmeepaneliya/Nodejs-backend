@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import HttpError from "../middleware/httpError.js";
 
 import Student from "../model/Student.js";
@@ -20,7 +21,7 @@ const add = async (req, res, next) => {
     await newStudent.save();
 
     res
-      .status(201)
+      .status(200)
       .json({
         success: true,
         message: "student data added successfully",
@@ -112,18 +113,22 @@ const updateManuallyData = async (req, res, next) => {
     if (!studentUpdate) {
       return next(new HttpError("student not found with this id"));
     }
+    const update = Object.keys(req.body);
+
+    console.log("update",update);
 
     const allowedFields = ["name", "email", "mobileNumber"];
 
-    const update = Object.keys(req.body)
-      .filter((u) => allowedFields.includes(u))
-      .reduce((data, u) => {
-        data[u] = req.body[u];
-        return data;
-      },{});
+    const isValidUpdate = update.every((u)=>allowedFields.includes(u));
+    console.log("is valid update",isValidUpdate);
 
-    Object.assign(studentUpdate, update);
+    if(!isValidUpdate){
+      return next(new HttpError("only allowed filed can be update",400));
+    }
 
+    update.forEach((update)=>(studentUpdate[update] = req.body[update]));
+
+    
     await studentUpdate.save();
 
     res
