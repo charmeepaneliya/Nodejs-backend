@@ -103,21 +103,25 @@ const updateEmployeeData = async (req, res, next) => {
       return next(new HttpError("no found data with this id", 404));
     }
 
+    const updates = Object.keys(req.body);
+
+    console.log("updates", updates);
+
     const allowedFields = ["name", "email", "mobileNumber"];
 
-    const update = {};
-    if (req.body) {
-      Object.keys(req.body).forEach((key) => {
-        if (allowedFields.includes(key)) {
-          update[key] = req.body[key];
-        }
-      });
+    const isValidUpdate = updates.every((u) => allowedFields.includes(u));
+
+    console.log("is valid update", isValidUpdate);
+
+    if (!isValidUpdate) {
+      return next(new HttpError("only allowed field can be update", 400));
     }
 
-    const updateEmployee = await Employee.findByIdAndUpdate(id, update, {
-      new: true,
-    });
+     updates.forEach((update) => (updateEmp[update] = req.body[update]));
 
+     await updateEmp.save();
+
+    
     res
       .status(200)
       .json({ success: true, message: "Employee data updated successfully" });

@@ -4,17 +4,20 @@ const employeeSchema = new mongoose.Schema({
     
     name:{
         type: String,
-        required: true
+        required: true,
+        trim:true
     },
     Id:{
         type:String,
          required: true,
-         unique:true
+         unique:true,
+         trim:true
     },
     email:{
         type:String,
          required: true,
-         unique:true
+         unique:true,
+         trim:true
     },
     dept:{
         type:String,
@@ -22,7 +25,7 @@ const employeeSchema = new mongoose.Schema({
          enum:["account","manager","development","designing"]
     },
     mobileNumber:{
-        type: Number,
+        type: String,
         required: true,
         minlength: 10
     }
