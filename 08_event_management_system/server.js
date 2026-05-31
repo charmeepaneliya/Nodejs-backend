@@ -5,18 +5,19 @@ import dotenv from "dotenv";
 
 import HttpError from "./middleware/HttpError.js";
 import connectDB from "./config/db.js";
-// import eventRouter from "./routers/eventRouters.js";
+import eventRouter from "./router/eventRouter.js";
 
-dotenv.config();
-console.log(process.env.MONGO_URI);
+dotenv.config({path: "./.env"});
+
+// console.log(process.env.MONGO_URI);
 
 const app = express();
 app.use(express.json());
 
 
-// app.use("/event",eventRouter)
+app.use("/event",eventRouter);
 
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ message: "hello from server" });
 });
 

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { type } from "node:os";
 
 const eventSchema = new mongoose.Schema({
 
@@ -8,28 +7,50 @@ const eventSchema = new mongoose.Schema({
         required: true,
         trim:true
     },
-    theme:{
-        type: String,
-        required: true,
-        trim:true
-    },
-    eventDay:{
+   
+    eventDate:{
         type:Date,
         required: true
     },
-    contact:{
+    eventDescription: {
         type: String,
-        required: true,
-        trim:true,
-        minlength: 10
+        // required:true,
+        trim: true,
     },
-    venue:{
+    eventPoster:{
+        type:String,
+        // required:true,
+    },
+    
+    Eventvenue:{
         type: String,
-        required:true,
+        // required:true,
         trim:true
     },
-
-});
+    eventImage:{
+        type: [String],
+    },
+    eventBanners:String ,
+       
+    eventSpeakers:{
+        type:[String],
+    },
+    
+    ticketPrice:{
+        type: Number,
+        default: 0,
+   },
+   eventDocument:{
+    type:[String],
+    // required:true,
+   },
+   
+    
+},
+{
+    timestamps:true,
+},
+);
 
 const Event = mongoose.model("eventData",eventSchema);
 
