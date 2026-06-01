@@ -1,14 +1,15 @@
 import HttpError from "../middleware/HttpError.js";
 import Event from "../model/Event.js";
+import fs from "fs";
 
 const create = async (req,res,next)=>{
-    try {
+    try {   
         console.log(req.body);
-        const {eventName,eventDate,eventDescription,Eventvenue,ticketPrice} = req.body;
+        const {eventName,eventDate,eventDescription,eventVenue,ticketPrice} = req.body;
 
-        const eventImage = req.files?.eventImage?.map((file)=>file.path) || null;
-        const eventPoster = req.files?.eventPoster[0]?.path || null;
-        const eventBanners = req.files?.eventBanners[0]?.path || null;
+        const eventImages = req.files?.eventImages?.map((file)=>file.path) || null;
+        const eventPoster = req.files?.eventPoster?.[0]?.path || null;
+        const eventBanners = req.files?.eventBanners?.[0]?.path || null;
         const eventSpeakers = req.files?.eventSpeakers?.map((file)=>file.path) || null;
         const eventDocument = req.files?.eventDocument?.map((file)=>file.path) || null;
 
@@ -16,13 +17,13 @@ const create = async (req,res,next)=>{
             return next(new HttpError("event date is required",400));
         }
 
-        const newEvent = await new Event({
+        const newEvent = new Event({
             eventName,
             eventDate,
             eventDescription,
             eventPoster,
-            Eventvenue,
-            eventImage,
+            eventVenue,
+            eventImages,
             eventBanners,
             eventSpeakers,
             ticketPrice,
@@ -36,5 +37,33 @@ const create = async (req,res,next)=>{
     } catch (error) {
         return next(new HttpError(error.message));
     }
+};
+
+const deleteEvent = async (req,res,next)=>{
+    try {
+        const {id} =  req.params;
+
+        const eventDelete = await Event.findById(id);
+
+        if(!eventDelete){
+            return next(new HttpError("event not found with this id",404));
+        }
+
+        const filesDelete = [
+            eventDelete.eventPoster,
+            eventDelete.eventBanners,
+            ...(eventDelete.eventImages || []),
+            ...(eventDelete.eventSpeakers || []),
+            ...(eventDelete.eventDocument || []),
+
+        ].filter(Boolean);
+
+        deleteFiles(filesDelete);
+
+        await Event.findByIdAndDelete(id);
+        res.status(200).json({success:true,message:"event data deleted successfully",});
+    } catch (error) {
+        return next(error.message,500);
+    }
 }
-export default {create};
+export default {create,deleteEvent};

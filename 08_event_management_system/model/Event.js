@@ -14,20 +14,20 @@ const eventSchema = new mongoose.Schema({
     },
     eventDescription: {
         type: String,
-        // required:true,
+        required:true,
         trim: true,
     },
     eventPoster:{
         type:String,
-        // required:true,
+        required:true,
     },
     
-    Eventvenue:{
+    eventVenue:{
         type: String,
-        // required:true,
+        required:true,
         trim:true
     },
-    eventImage:{
+    eventImages:{
         type: [String],
     },
     eventBanners:String ,
@@ -42,7 +42,7 @@ const eventSchema = new mongoose.Schema({
    },
    eventDocument:{
     type:[String],
-    // required:true,
+    required:true,
    },
    
     

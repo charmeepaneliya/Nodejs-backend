@@ -20,4 +20,6 @@ router.post(
   eventController.create,
 );
 
+router.delete("/:id",eventController.deleteEvent);
+
 export default router;
