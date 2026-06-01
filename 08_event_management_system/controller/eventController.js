@@ -58,12 +58,10 @@ const deleteEvent = async (req,res,next)=>{
 
         ].filter(Boolean);
 
-        deleteFiles(filesDelete);
-
         await Event.findByIdAndDelete(id);
         res.status(200).json({success:true,message:"event data deleted successfully",});
     } catch (error) {
-        return next(error.message,500);
+        return next(new HttpError(error.message,500));
     }
 }
 export default {create,deleteEvent};
