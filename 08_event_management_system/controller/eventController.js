@@ -39,17 +39,51 @@ const create = async (req,res,next)=>{
     }
 };
 
+const getAllEvents = async (req,res,next) => {
+    try {
+       const events = await Event.find({});
+
+       if(events.length === 0){
+        return res.status(404).json({success:true,message:"no event data found",data:null});
+       }
+       res.status(200).json({
+        success:true,
+        message:"all event data fetched successfully",
+        data:events
+       });
+    } catch (error) {
+        return next(new HttpError(error.message,500));
+    }
+};
+
+const eventById = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+
+        const event = await Event.findById(id);
+
+        console.log("event",event);
+
+        if(!event){
+            return next(new HttpError("no event data found with this id",404));
+        }
+        res.status(200).json({success:true,message:"event data found",data:event});
+    } catch (error) {
+        return next(new HttpError(error.message,500));
+    }
+};
+
 const deleteEvent = async (req,res,next)=>{
     try {
         const {id} =  req.params;
 
-        const eventDelete = await Event.findById(id);
+        const eventDelete = await Event.findByIdAndDelete(id);
 
         if(!eventDelete){
             return next(new HttpError("event not found with this id",404));
         }
 
-        const filesDelete = [
+         const filesToDelete = [
             eventDelete.eventPoster,
             eventDelete.eventBanners,
             ...(eventDelete.eventImages || []),
@@ -58,10 +92,78 @@ const deleteEvent = async (req,res,next)=>{
 
         ].filter(Boolean);
 
-        await Event.findByIdAndDelete(id);
-        res.status(200).json({success:true,message:"event data deleted successfully",});
+        filesToDelete.forEach((file) =>{
+            if(fs.existsSync(file)){
+                fs.unlinkSync(file);
+            }else{
+                return next(new HttpError("failed to delete file"));
+            }
+        });
+
+       
+
+        return res.status(200).json({success:true,message:"event deleted"});
+        
+
+        // const filesDelete = [
+        //     eventDelete.eventPoster,
+        //     eventDelete.eventBanners,
+        //     ...(eventDelete.eventImages || []),
+        //     ...(eventDelete.eventSpeakers || []),
+        //     ...(eventDelete.eventDocument || []),
+
+        // ].filter(Boolean);
+
+        // await Event.findByIdAndDelete(id);
+        // res.status(200).json({success:true,message:"event data deleted successfully",});
     } catch (error) {
         return next(new HttpError(error.message,500));
     }
-}
-export default {create,deleteEvent};
+};
+
+const updateEvent = async(req,res,next) => {
+    try {
+        const {id} = req.params;
+
+        const event = await Event.findById(id);
+
+        console.log("update event",event);
+
+        if(!event){
+            return next(new HttpError("no event data found with this id",404));
+        }
+        const update = Object.keys(req.body);
+
+        const allowedFields = ["eventName","eventDate","eventDescription","eventVenue","ticketPrice"];
+
+        const isValidFields = update.every((field) => allowedFields.includes(field), );
+
+        if(!isValidFields){
+            return next(new HttpError("onlu allowed field can be updated",400));
+        }
+
+        if(req.files?.eventImages){
+            event.eventImages.forEach((file)=>{
+                if(fs.existsSync(file)){
+                    fs.unlinkSync(file);
+                }
+            });
+
+            event.eventImages = req.files?.eventImages?.map((file) => file.path) || null;
+        }
+
+        update.forEach((update)=>{
+            event[update] = req.body[update];
+        });
+
+        await event.save();
+
+        res.status(200).json({success:true,message:"event data updated successfully",event});
+
+        
+    
+    } catch (error) {
+        return next(new HttpError(error.message,500));
+    }
+};
+export default {create,getAllEvents,eventById,deleteEvent,updateEvent};
