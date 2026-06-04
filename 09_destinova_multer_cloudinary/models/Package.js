@@ -14,7 +14,7 @@ const packageShema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  packageImage: {
+  packageImages: {
     type: String,
     required: true,
   },
@@ -27,6 +27,6 @@ const packageShema = new mongoose.Schema({
     timestamps:true,
 });
 
-const Pakesge = mongoose.model("packages", packageShema);
+const Package = mongoose.model("packages", packageShema);
 
-export default Pakesge;
+export default Package;
