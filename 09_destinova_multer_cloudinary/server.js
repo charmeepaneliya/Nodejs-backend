@@ -4,10 +4,14 @@ import HttpError from "./middleware/HttpError.js";
 
 import connectDB from "./config/db.js";
 
+import packageRouter from "./routers/packageRouter.js";
+
 dotenv.config({path: "./.env"});
 
 const app = express();
 app.use(express.json());
+
+app.use("/package",packageRouter);
 
 app.get("/", (req, res) => {
   res.json("hello form server");

@@ -4,24 +4,50 @@ import fs from "fs";
 
 import HttpError from "../middleware/HttpError.js";
 
-const create = async(req,res,next) =>{
-    try {
-        const {packageName,startdDate,endDate,packagePrice} = req.body;
+const add = async (req, res, next) => {
+  try {
+    const {
+      packageName,
+      startdDate,
+      endDate,
+      packageDuration,
+      destination,
+      packagePrice,
+      packageType,
+    } = req.body;
+   
 
-        const packageImages = req.file?.packageImages[0]?.path || null;
-
-        if(!startdDate || endDate){
-            return next(new HttpError("start date and end date is required", 400));
-        }
-
-        const newPackage = new Pakesge({
-            packageName,startdDate,endDate,packagePrice
-        });
-
-        await newPackage.save();
-
-        res.status(201).json({success:true,message:"new package added successfully!",newPackage});
-    } catch (error) {
-        return next(new HttpError(error.message));
+    if (
+      !packageName ||
+      !startdDate ||
+      !endDate ||
+      !packageDuration ||
+      !destination ||
+      !packagePrice ||
+      !packageType
+    ) {
+      return next(new HttpError("all fields are required"));
     }
+
+    const packageImage = req.file.path;
+
+    const newPackage = new Pakesge({
+      packageName,
+      startdDate,
+      endDate,
+      packageDuration,
+      destination,
+      packagePrice,
+      packageType,
+      packageImages: req.file.path,
+    });
+
+    await newPackage.save();
+
+    res.status(201).json({success:true,message:"new package added sucessfully!",newPackage});
+  } catch (error) {
+    return next(new HttpError(error.message,500));
+  }
 };
+
+export default {add};
