@@ -28,6 +28,10 @@ const packageShema = new mongoose.Schema(
       type: String,
       required: true,
     },
+     cloudinary_id: {
+      type: String,
+      required: true,
+    },
     packagePrice: {
       type: Number,
       default: 0,
