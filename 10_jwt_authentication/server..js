@@ -3,11 +3,14 @@ import express from "express";
 import HttpError from "./middleware/HttpError.js";
 
 import connectDB from "./config/db.js";
+import userRouter from "./routers/userRouters.js";
 
 dotenv.config({path: "./.env"});
 
 const app = express();
 app.use(express.json());
+
+app.use("/user",userRouter);
 
 app.get("/", (req, res) => {
   res.json("hello form server");
