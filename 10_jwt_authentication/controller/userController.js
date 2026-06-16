@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import HttpError from "../middleware/HttpError.js";
 
+import jwt from "jsonwebtoken";
+
 
 
 const add = async (req, res, next) => {
@@ -50,7 +52,9 @@ const login = async (req,res,next)=>{
       next (new HttpError("unable to login",400));
     }
 
-    res.status(200).json({success:true,message:"user logged in successfully!",user});
+    const token = await user.generateAuthToken();
+    
+    res.status(200).json({success:true,message:"user logged in successfully!",user,token});
   } catch (error) {
     return next(new HttpError(error.message,500));
   }

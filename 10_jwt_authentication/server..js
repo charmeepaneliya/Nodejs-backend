@@ -5,6 +5,7 @@ import HttpError from "./middleware/HttpError.js";
 import connectDB from "./config/db.js";
 import userRouter from "./routers/userRouters.js";
 
+dotenv.config();
 dotenv.config({path: "./.env"});
 
 const app = express();

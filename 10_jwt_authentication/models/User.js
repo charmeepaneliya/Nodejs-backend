@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+import jwt from "jsonwebtoken";
+
 const userSechma = new mongoose.Schema(
   {
     name: {
@@ -58,6 +60,17 @@ userSechma.statics.findByCredential = async function (Email, Password) {
     throw new Error(error.message);
   }
 };
+
+userSechma.methods.generateAuthToken = async function(){
+  const user = this;
+
+  const token = jwt.sign(
+    {_id:user._id.toString()},
+    process.env.JWT_SECRET,
+    {expiresIn : "7d"}
+  );
+  return token;
+}
 const User = mongoose.model("user", userSechma);
 
 export default User;
