@@ -34,17 +34,25 @@ const userSechma = new mongoose.Schema(
 );
 
 userSechma.pre("save", async function () {
-  
   const user = this;
+
+  console.log("before hash password:", user.Password);
 
   if (user.isModified("Password")) {
     user.Password = await bcrypt.hash(user.Password, 10);
+    console.log("after hash pwd:", user.Password);
   }
+  console.log("----- save completed -----");
 });
 
 userSechma.statics.findByCredential = async function (Email, Password) {
   try {
+    console.log("----- login process -----");
+    console.log("email entered:", Email);
+
     const user = await this.findOne({ Email });
+
+    console.log("user found:", user);
 
     if (!user) {
       throw new Error("uneble to login");
@@ -52,25 +60,44 @@ userSechma.statics.findByCredential = async function (Email, Password) {
 
     const isMatched = await bcrypt.compare(Password, user.Password);
 
+    console.log("password metched:", isMatched);
+
     if (!isMatched) {
       throw new Error("uneble to login");
     }
+
+    console.log("----- login success -----");
+
     return user;
   } catch (error) {
+    console.log("login error:", error.message);
     throw new Error(error.message);
   }
 };
 
-userSechma.methods.generateAuthToken = async function(){
-  const user = this;
+userSechma.methods.generateAuthToken = async function () {
+  try {
+    const user = this;
 
-  const token = jwt.sign(
-    {_id:user._id.toString()},
-    process.env.JWT_SECRET,
-    {expiresIn : "7d"}
-  );
-  return token;
-}
+    console.log("----- generate token -----");
+    console.log("user id:",user._id);
+
+    const token = jwt.sign(
+      { _id: user._id.toString() },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" },
+    );
+
+    console.log("Generated token:",token);
+    console.log("----- token created -----");
+
+    return token;
+
+  } catch (error) {
+    console.log("token error:", error.message);
+    throw new Error(error.message);
+  }
+};
 const User = mongoose.model("user", userSechma);
 
 export default User;
