@@ -1,17 +1,25 @@
 import express from "express";
 import HttpError from "./middleware/HttpError.js";
 import connectDB     from "./config/db.js";
+import authRouts from "./routers/authRouters.js";
+
 import dotenv from "dotenv";
 
 dotenv.config({path:"./.env"});
 
 const app = express();
 
+app.set("view engine","ejs");
+
 app.use(express.json());
 
+app.use("/auth",authRouts)
+
 app.get("/", (req, res) => {
-  res.json("hello from server");
+  res.render("home");
 });
+
+
 
 app.use((req, res, next) => {
   return next(new HttpError("requested route not found", 404));

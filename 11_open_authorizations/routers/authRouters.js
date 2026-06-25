@@ -1,9 +1,17 @@
 import express from "express";
+import passport from "passport";
 
 const router = express.Router();
 
-router.get("/login",(req,res)=>{
-    res.send("Home page");
-})
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  }),
+);
 
 export default router;
