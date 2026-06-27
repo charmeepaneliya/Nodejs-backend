@@ -7,11 +7,13 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-  }),
-);
+// router.get(
+//   "/google/login",
+//   passport.authenticate("google", {
+//     scope: ["profile", "email"],
+//   }),
+// );
+
+router.get("/google/login",passport.authenticate("google",{scope:[["email"],["profile"]]}))
 
 export default router;
