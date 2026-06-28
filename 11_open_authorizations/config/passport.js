@@ -1,5 +1,6 @@
 import passport from "passport";
-import { Strategy as GoogleStrategy} from "passport-google-oauth20";
+// import { Strategy as GoogleStrategy} from "passport-google-oauth20";
+import GoogleStrategy from "passport-google-oauth20";
 import dotenv from "dotenv";
 import User from "../model/User.js";
 
@@ -17,9 +18,10 @@ passport.use(
 
     async function (accessToken, refreshToken, profile, done) {
       try {
+        console.log("Google callback called");
         const alredyUser = await User.findOne({ googleId: profile.id });
 
-        console.log("profile",profile);
+        console.log("profile", profile);
 
         if (!alredyUser) {
           const newUser = await User.create({
@@ -31,7 +33,7 @@ passport.use(
         }
         done(null, alredyUser);
       } catch (error) {
-        throw new Error(error.message);
+        console.log(error.message);
       }
     },
   ),
