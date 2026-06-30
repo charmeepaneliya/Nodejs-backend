@@ -6,7 +6,7 @@ import HttpError from "./HttpError.js";
 
 const auth = async (req, res, next) => {
   try {
-    console.log("------auth middleware start------");
+    // console.log("------auth middleware start------");
 
     const authHeader = req.header("Authorization");
     console.log("Authorization header:",authHeader);
@@ -19,13 +19,14 @@ const auth = async (req, res, next) => {
     console.log("extracted token:",token);
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("decoded token:",decoded);
+    console.log("JWT Secret:", process.env.JWT_SECRET);
+    // console.log("decoded token:",decoded);
 
     const user = await User.findOne({
       _id: decoded._id,
       "tokens.token": token,
     });
-    console.log("user found:",user);
+    // console.log("user found:",user);
 
     if (!user) {
       return next(new HttpError("user not found", 404));
@@ -34,17 +35,17 @@ const auth = async (req, res, next) => {
     req.user = user;
     req.token = token;
 
-    console.log("req.user:",req.user);
-    console.log("req.token:",req.token);
+    // console.log("req.user:",req.user);
+    // console.log("req.token:",req.token);
 
-    console.log("-----auth success-----");
+    // console.log("-----auth success-----");
 
     next();
   } catch (error) {
 
-    console.log("----- auth error -----");
-    console.log(errror);
-    console.log("---------------------");
+    // console.log("----- auth error -----");
+    // console.log(errror);
+    // console.log("---------------------");
     
     return next(new HttpError(error.message, 500));
   }

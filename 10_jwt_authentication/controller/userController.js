@@ -49,21 +49,24 @@ const getAllUsers = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    console.log("Logoin Request Body:",req.body);
+    // console.log("Logoin Request Body:",req.body);
+    console.log("Headers:", req.headers);
+    console.log("Body:", req.body);
 
     const { Email, Password } = req.body;
 
     const user = await User.findByCredential(Email, Password);
 
-    console.log("user found",user);
+    // console.log("user found",user);
 
     if (!user) {
       next(new HttpError("unable to login", 400));
     }
 
     const token = await user.generateAuthToken();
+    
 
-    console.log("generater token:",token);
+    // console.log("generater token:",token);
 
     res.status(200).json({
       success: true,
@@ -73,57 +76,61 @@ const login = async (req, res, next) => {
     });
   } catch (error) {
 
-    console.log("login Error:",error.message);
+    // console.log("login Error:",error.message);
 
     return next(new HttpError(error.message, 500));
   }
 };
 
 const authLogin = async (req, res, next) => {
+  const user = req.user;
+
+  res.status(200).json({success:true,message:"auth login successfully!",user});
+};
+
+const deleteUser = async (req,res,next)=>{
   try {
-
-    console.log("authentication user:",req.user);
-
     const user = req.user;
-
-    if (!user) {
-      return next(new HttpError("unauthorized user", 401));
-    }
-
-    res
-      .status(200)
-      .json({ success: true, message: "auth login successfully!", user });
+    await User.deleteOne(user);
+   res.status(200).json({success:true,message:"user deleted successfully!"});
   } catch (error) {
-    console.log("auth login error:",error.message);
+    
+  }
+}
 
-    return next(new HttpError(error.message, 500));
+const logOut  = async (req, res, next) => {
+  // try {
+  //   const user = req.user;
+  //   const token = req.token;
+
+  //   console.log("Current User:",user.name);
+  //   console.log("Current Tolken:",token);
+
+  //   user.tokens = user.tokens.filter((t) => t.token !== token);
+
+  //   console.log("Remaining tokens:",user.tokens);
+
+  //   await user.save();
+
+  //   res
+  //     .status(200)
+  //     .json({ success: true, message: "user deleted successfully!" });
+  // } catch (error) {
+  //   console.log("logout error:",error.message);
+  //   return next(new HttpError(error.message, 500));
+  // }
+  try {
+    req.user.tokens = req.user.tokens.filter((t)=>t.token != req.token);
+
+    await req.user.save();
+
+    res.status(200).json({success:true,message:"user log out successfully"});
+  } catch (error) {
+    return next (new HttpError(error.message,500));
   }
 };
 
-const userDelete = async (req, res, next) => {
-  try {
-    const user = req.user;
-    const token = req.token;
-
-    console.log("Current User:",user.name);
-    console.log("Current Tolken:",token);
-
-    user.tokens = user.tokens.filter((t) => t.token !== token);
-
-    console.log("Remaining tokens:",user.tokens);
-
-    await user.save();
-
-    res
-      .status(200)
-      .json({ success: true, message: "user deleted successfully!" });
-  } catch (error) {
-    console.log("logout error:",error.message);
-    return next(new HttpError(error.message, 500));
-  }
-};
-
-const delFromAllDevice = async (req, res, next) => {
+const logOutAll = async (req, res, next) => { 
   try {
     const user = req.user;
 
@@ -192,7 +199,7 @@ export default {
   getAllUsers,
   login,
   authLogin,
-  userDelete,
-  delFromAllDevice,
+  logOut,
+  logOutAll,
   userUpdate,
 };

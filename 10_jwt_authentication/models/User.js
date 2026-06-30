@@ -27,6 +27,14 @@ const userSechma = new mongoose.Schema(
         }
       },
     },
+     tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ]
   },
   {
     timestamps: true,
@@ -50,7 +58,7 @@ userSechma.statics.findByCredential = async function (Email, Password) {
     console.log("----- login process -----");
     console.log("email entered:", Email);
 
-    const user = await this.findOne({ Email });
+    const user = await User.findOne({ Email });
 
     console.log("user found:", user);
 
@@ -79,25 +87,37 @@ userSechma.methods.generateAuthToken = async function () {
   try {
     const user = this;
 
-    console.log("----- generate token -----");
-    console.log("user id:",user._id);
+    // console.log("----- generate token -----");
+    // console.log("user id:", user._id);
 
     const token = jwt.sign(
       { _id: user._id.toString() },
       process.env.JWT_SECRET,
       { expiresIn: "7d" },
     );
-
-    console.log("Generated token:",token);
-    console.log("----- token created -----");
-
+    user.tokens = user.tokens.concat({ token });
+    // console.log("Generated token:", token);
+    // console.log("----- token created -----");
+    await user.save();
     return token;
-
   } catch (error) {
-    console.log("token error:", error.message);
+    // console.log("token error:", error.message);
     throw new Error(error.message);
   }
 };
-const User = mongoose.model("user", userSechma);
+
+userSechma.methods.toJSON = function () {
+  const user = this;
+  // console.log("user", user);
+  const userObject = user.toObject();
+
+  // console.log("userObject", userObject);
+
+  delete userObject.password;
+  delete userObject.tokens;
+  delete userObject.__v;
+  return userObject;
+};
+const User = mongoose.model("User", userSechma);
 
 export default User;

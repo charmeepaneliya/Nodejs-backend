@@ -14,10 +14,10 @@ router.post("/login",userController.login);
 
 router.post("/authLogin",auth,userController.authLogin);
 
-router.delete("/userDelete",auth,userController.userDelete);
+router.delete("/userDelete",auth,userController.logOut );
 
-router.delete("allDelete",auth,userController.delFromAllDevice);
+router.delete("/allDelete",auth,userController.logOutAll);
 
-router.patch("userUpdate",auth,userController.userUpdate);
+router.patch("/userUpdate",auth,userController.userUpdate);
 
 export default router;
