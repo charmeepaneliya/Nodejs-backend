@@ -1,6 +1,6 @@
 import passport from "passport";
-// import { Strategy as GoogleStrategy} from "passport-google-oauth20";
-import GoogleStrategy from "passport-google-oauth20";
+import { Strategy as GoogleStrategy} from "passport-google-oauth20";
+// import GoogleStrategy from "passport-google-oauth20";
 import dotenv from "dotenv";
 import User from "../model/User.js";
 
@@ -38,4 +38,10 @@ passport.use(
     },
   ),
 );
+
+passport.serializeUser((user,done)=>{
+  done(null,user.id);
+});
+
+
 export default passport;
