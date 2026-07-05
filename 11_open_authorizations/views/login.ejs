@@ -11,23 +11,79 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+
+    <style>
+      body{
+            background: linear-gradient(135deg, #0f172a, #1e293b, #111827);
+            min-height: 100vh;
+        }
+
+        .login-card{
+            max-width: 450px;
+            width: 100%;
+            background: #1f2937;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,.5);
+            color: white;
+        }
+
+        .login-icon{
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg,#3b82f6,#2563eb);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: white;
+            margin: auto;
+        }
+
+        .google-btn{
+            background: white;
+            color: black;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .google-btn:hover{
+            background: #f3f4f6;
+            transform: translateY(-2px);
+        }
+
+        .home-btn{
+            border: 1px solid #3b82f6;
+            color: #3b82f6;
+        }
+
+        .home-btn:hover{
+            background: #3b82f6;
+            color: white;
+        }
+
+        p{
+            color: #d1d5db;
+        }
+    </style>
   </head>
   <body class="bg-light">
     <div
       class="container vh-100 d-flex justify-content-center align-items-center"
     >
       <div
-        class="card shadow-lg p-5 text-center"
+        class="card shadow-lg p-5 text-center login-card"
         style="max-width: 450px; width: 100%"
       >
-        <h2 class="mb-4 text-primary">🔐 Login Page</h2>
+        <h2 class="mb-4 text-primary login-icon]">🔐 Login Page</h2>
 
-        <p class="text-muted mb-4">
+        <p class="text-center mb-4">
           Sign in with your Google account to continue.
         </p>
 
         <br />
-        <a href="/auth/google/login" class="btn btn-light border shadow-sm btn-lg w-100">
+        <a href="/auth/google/login" class="btn  btn-light border shadow-sm btn-lg w-100">
           <img
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
             width="20"
@@ -36,7 +92,7 @@
           Continue with google</a
         >
         <br />
-        <a href="/" class="btn btn-outline-primary w-100 mt-3">← Back to Home</a>
+        <a href="/" class="btn btn-outline-primary w-100 mt-3 home-btn">← Back to Home</a>
       </div>
     </div>
 
@@ -47,3 +103,5 @@
     ></script>
   </body>
 </html>
+
+

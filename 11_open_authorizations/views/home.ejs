@@ -11,23 +11,77 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+
+    <style>
+        body{
+            background: linear-gradient(135deg, #0f172a, #1e293b, #111827);
+            min-height: 100vh;
+        }
+
+        .home-card{
+            max-width: 450px;
+            width: 100%;
+            background: #1f2937;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,.5);
+        }
+
+      
+
+        h1{
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        p{
+            color: #d1d5db;
+        }
+
+        .btn{
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 12px;
+            transition: .3s;
+        }
+
+        .btn:hover{
+            transform: translateY(-2px);
+        }
+
+        .btn-success{
+            background: #22c55e;
+            border: none;
+        }
+
+        .btn-primary{
+            background: #2563eb;
+            border: none;
+        }
+    </style>
+
   </head>
   <body class="bg-light">
     <div
       class="container vh-100 d-flex justify-content-center align-items-center"
     >
       <div
-        class="card shadow-lg text-center p-5"
+        class="card home-card shadow-lg text-center p-5"
         style="max-width: 450px; width: 100%"
       >
         <h1 class="mb-4 text-primary">🏠 Home Page</h1>
-        <p class="text-muted mb-4">
+        <p class="text-center mb-4">
           Welcome! Sign in with your Google account to continue.
         </p>
 
-        <a href="/auth/login" class="btn btn-primary btn-lg">
-          click here for login
-        </a>
+        
+
+       <% if (user) { %>
+        <a href="/profile" class="btn btn-success">Go to Profile Page</a>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-primary">Go to Login</a>
+        <% } %>
       </div>
     </div>
 
@@ -38,3 +92,5 @@
     ></script>
   </body>
 </html>
+
+

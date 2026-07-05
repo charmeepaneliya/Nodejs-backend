@@ -1,9 +1,15 @@
 
-// const checkAuth = (req,res,next) =>{
-//     if(req.isAuthenticated){
-//         return next();
-//     }
-//     return res.redirect("/auth/login");
-// }
+import HttpError from "./HttpError.js";
 
-// export default checkAuth;
+const checkAuth = (req,res,next)=>{
+    try {
+        if(!req.user){
+            res.redirect("/");
+        }
+        next();
+    } catch (error) {
+        next(new HttpError(error.message,5000));
+    }
+};
+
+export default checkAuth;

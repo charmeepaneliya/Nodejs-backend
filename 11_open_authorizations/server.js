@@ -1,10 +1,13 @@
 import express from "express";
+
 import HttpError from "./middleware/HttpError.js";
 import connectDB from "./config/db.js";
-import authRouts from "./routers/authRouters.js";
-import passport from "./config/passport.js";
-import session from "express-session";
 
+import authRouts from "./routers/authRouters.js";
+import profileRoutes from "./routers/profileRoutes.js";
+import passport from "./config/passport.js";
+
+import session from "express-session";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env" });
@@ -14,13 +17,13 @@ const app = express();
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    reseve: false,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       path:"/",
       httpOnly: true,
       secure: false,
-      maxAge: 60 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000,
     },
   }),
 );
@@ -35,10 +38,12 @@ app.use(express.json());
 
 app.use("/auth", authRouts);
 
+app.use("/profile",profileRoutes);
+
 
 
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home",{user:req.user});
 });
 
 app.use((req, res, next) => {
