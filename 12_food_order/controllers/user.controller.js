@@ -4,9 +4,9 @@ import User from "../models/User.model.js";
 const add = async (req,res,next)=>{
     try {
           
-        const {name,email,password,role,isVarified}=req.body;
+        const {name,email,password,role,phone,isVarified}=req.body;
         const newUser = {
-            name,email,password,role,isVarified
+            name,email,password,role,phone,isVarified
         }
         const user = new User(newUser);
         await user.save();

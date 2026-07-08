@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -25,14 +26,19 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    role:{
-        type:String,
-        enum:["customer","admin","provider"],
-        default:"customer",
+    role: {
+      type: String,
+      enum: ["customer", "admin", "provider"],
+      default: "customer",
     },
-    isVarified:{
-        type:Boolean,
-        default:false,
+    phone:{
+      type:String,
+      required:true,
+      trim:true,
+    },
+    isVarified: {
+      type: Boolean,
+      default: false,
     },
 
     tokens: [
@@ -49,15 +55,29 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-userSchema.pre("save",async function(){
+userSchema.pre("save", async function () {
   const user = this;
-  if(user.isModified("password")){
+  if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 10);
-    
   }
-
 });
+userSchema.static.findByCredential = async function (email, password) {
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error("unable to login");
+    }
+    const isMatched = await bcrypt.compare(password, user.password);
 
-const User = mongoose.model("User",userSchema);
+    if (!isMatched) {
+      throw new Error("unable to login");
+    }
+    return user;
+  } catch (error) {
+    throw new Error("error.message");
+  }
+};
+
+const User = mongoose.model("User", userSchema);
 
 export default User;
