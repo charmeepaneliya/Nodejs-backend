@@ -1,7 +1,7 @@
 //thied party or external module
 import express from "express";
 
-import dotenv from "dotenv;"
+import dotenv from "dotenv";
 
 //dotenv config
 dotenv.config({path:"./.env"});
@@ -10,7 +10,14 @@ dotenv.config({path:"./.env"});
 import HttpError from "./middleware/HttpError.js";
 import connectDB from "./config/db.js";
 
+// routers
+import userRouter from "./routers/user.router.js";
+
 const app = express();
+
+app.use(express.json());
+
+app.use("/user",userRouter);
 
 //server check
 app.get("/",(req,res)=>{
