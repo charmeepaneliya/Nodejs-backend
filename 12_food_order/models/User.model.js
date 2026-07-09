@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema(
   {
@@ -31,10 +31,10 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "admin", "provider"],
       default: "customer",
     },
-    phone:{
-      type:String,
-      required:true,
-      trim:true,
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
     },
     isVarified: {
       type: Boolean,
@@ -61,7 +61,7 @@ userSchema.pre("save", async function () {
     user.password = await bcrypt.hash(user.password, 10);
   }
 });
-userSchema.static.findByCredential = async function (email, password) {
+userSchema.statics.findByCredential = async function (email, password) {
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -75,6 +75,22 @@ userSchema.static.findByCredential = async function (email, password) {
     return user;
   } catch (error) {
     throw new Error("error.message");
+  }
+};
+
+userSchema.method.generateAuthToken = async function () {
+  try {
+    const user = this;
+    const token = jwt.sign(
+      { _id: user._id.toString() },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" },
+    );
+    user.tokens = user.tokens.concate({ token });
+    await user.save();
+    return token;
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 

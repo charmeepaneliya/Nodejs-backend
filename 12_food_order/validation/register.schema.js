@@ -11,12 +11,19 @@ const userSchema = Joi.object({
     "any.required": "Name is required",
   }),
   password: Joi.string().min(6).max(30).required().messages({
+    "string.base":"password must be in string formate",
     "string.min": "password must be minmum 6 character",
     "string.max": "password must be maximum 6 character",
     "any.required": "Name is required",
   }),
 
-  role: Joi.string().valid("customer","provider").required().messages({
+  phone:Joi.string().pattern(/^[0-9]{10}$/).required().messages({
+    "string.base":"phone number must be string",
+    "string.pattern.base":"phone number must be a valid 10-digit",
+    "any.required":"phone number is required",
+  }),
+
+  role: Joi.string().valid("customer","provider").default("customer").required().messages({
     "any.required": "Name is required",
   }),
 });
