@@ -39,5 +39,20 @@ const login = async (req,res,next)=>{
         next(new HttpError(error.message,500));
     }
 }
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
 
-export default {add , login};
+    if (users.length === 0) {
+      return next(new HttpError("no user data found", 404));
+    }
+    res.status(200).json({
+      success: true,
+      message: "all user data fetched successfully!",
+      users,
+    });
+  } catch (error) {
+    return next(new HttpError(error.message, 500));
+  }
+};
+export default {add , login , getAllUsers};
