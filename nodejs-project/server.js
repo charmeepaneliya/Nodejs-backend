@@ -1,3 +1,5 @@
+
+
 import express from "express";
 
 import HttpError from "./middleware/httpError.js";
@@ -14,7 +16,7 @@ app.use("/", (req, res) => {
   res.json({ message: "hello from server" });
 });
 
-app.use((res, req, next) => {
+app.use((req, res, next) => {
   return next(new HttpError("request route not found", 404));
 });
 

@@ -12,5 +12,11 @@ router.get("/:id",packageController.getById);
 
 router.delete("/:id",packageController.deletePackage);
 
+router.patch(
+  "/:id",
+  upload.single("image"),
+  packageController.updatePackageDetail,
+);
+
 export default router;
 

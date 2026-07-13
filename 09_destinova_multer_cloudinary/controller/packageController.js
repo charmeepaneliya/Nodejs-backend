@@ -113,4 +113,57 @@ const deletePackage = async (req,res,next) =>{
   }
 }
 
+
+const updatePackageDetail = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const TravelPackage = await Packages.findById(id);
+
+    if (!TravelPackage) {
+      return next(new HttpError("package not found", 404));
+    }
+
+    const updates = Object.keys(req.body);
+
+    const allowedFields = [
+      "packageName",
+      "price",
+      "startDate",
+      "endDate",
+      "duration",
+      "destination",
+      "packageType",
+    ];
+
+    const isValidUpdates = updates.every((field) =>
+      allowedFields.includes(field),
+    );
+
+    if (!isValidUpdates) {
+      return next(new HttpError("only allowed field can be updated", 500));
+    }
+
+    updates.forEach((update) => {
+      TravelPackage[update] = req.body[update];
+    });
+
+    if (req.file) {
+      await cloudinary.uploader.destroy(TravelPackage.cloudinary_id);
+
+      TravelPackage.packageImage = req.file.path;
+      TravelPackage.cloudinary_id = req.file.filename;
+    }
+
+    await TravelPackage.save();
+
+    res.status(200).json({
+      success: true,
+      message: "package data updated successfully",
+      TravelPackage,
+    });
+  } catch (error) {
+    next(new HttpError(error.message, 500));
+  }
+};
 export default { add, getAllPakages, getById, deletePackage };

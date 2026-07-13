@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const packageShema = new mongoose.Schema(
+const packageSchema = new mongoose.Schema(
   {
     packageName: {
       type: String,
@@ -45,6 +45,6 @@ const packageShema = new mongoose.Schema(
   },
 );
 
-const Package = mongoose.model("packages", packageShema);
+const Package = mongoose.model("packages", packageSchema);
 
 export default Package;
