@@ -5,7 +5,7 @@ const validate = (Schema) => (req, res, next) => {
     const { error, value } = Schema.valid(req.body, {
       abortEarly: false,
       allowUnknown: false,
-      stripUnknown: true,
+     
     });
     if (error) {
       return next(new HttpError(error.details[0].messaeg, 400));
