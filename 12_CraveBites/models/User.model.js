@@ -78,20 +78,20 @@ userSchema.statics.findByCredential = async function (email, password) {
   }
 };
 
-userSchema.method.generateAuthToken = async function () {
-  try {
-    const user = this;
-    const token = jwt.sign(
-      { _id: user._id.toString() },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" },
-    );
-    user.tokens = user.tokens.concate({ token });
-    await user.save();
-    return token;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+userSchema.methods.generateAuthToken = async function () {
+  const user = this;
+
+  const token = jwt.sign(
+    { _id: user._id.toString() },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+
+  user.tokens.push({ token });
+
+  await user.save();
+
+  return token;
 };
 
 const User = mongoose.model("User", userSchema);

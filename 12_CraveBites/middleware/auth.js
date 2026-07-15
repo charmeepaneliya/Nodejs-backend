@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
     if (!authHeader) {
       return next(new HttpError("auth header is required"));
     }
-    const token = authHeader.replace("Bearer", "");
+    const token = authHeader.replace("Bearer ","");
 
     const decode = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -25,7 +25,7 @@ const auth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error.message,500);
   }
 };
 export default auth;
