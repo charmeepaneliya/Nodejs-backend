@@ -12,12 +12,16 @@ import connectDB from "./config/db.js";
 
 // routers
 import userRouter from "./routers/user.router.js";
+import adminRouter from "./routers/admin.router.js";
+import restaurantRoutes from "./routers/restaurant.router.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.use("/user",userRouter);
+app.use("/admin",adminRouter);
+app.use("/restuarant",restaurantRoutes);
 
 //server check
 app.get("/",(req,res)=>{

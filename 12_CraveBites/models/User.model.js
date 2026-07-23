@@ -40,6 +40,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    address:{
+      type:String,
+      required:true,
+    },
+    profilePic:{
+      type:String,
+    },
+    cloudinary_id:{
+      type:String,
+    },
 
     tokens: [
       {
