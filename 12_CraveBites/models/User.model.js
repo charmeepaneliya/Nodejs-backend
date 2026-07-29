@@ -62,8 +62,12 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true},
   },
 );
+
+
 
 userSchema.pre("save", async function () {
   const user = this;
@@ -103,6 +107,12 @@ userSchema.methods.generateAuthToken = async function () {
 
   return token;
 };
+
+userSchema.virtual("restaurant",{
+  ref:"Restaurant",
+  localField:"_id",
+  foreignField:"owner"
+})
 
 const User = mongoose.model("User", userSchema);
 

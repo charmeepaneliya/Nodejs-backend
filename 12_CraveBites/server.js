@@ -87,9 +87,11 @@ startServer();
 
 async function virtualRestaurant(){
   try {
-    const owner = await User.findById("6a5f177c9b9606c20e0bc133");
+    const owner = await User.findById("6a5f177c9b9606c20e0bc133").populate("restaurant");
     // console.log("restaurant owner",owner);
+    // console.log("restaurant",owner);
     console.log("restaurant",owner.restaurant);
+    
   } catch (error) {
     console.log(error)
   }
