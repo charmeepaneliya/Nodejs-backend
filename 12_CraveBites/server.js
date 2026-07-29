@@ -14,6 +14,8 @@ import connectDB from "./config/db.js";
 import userRouter from "./routers/user.router.js";
 import adminRouter from "./routers/admin.router.js";
 import restaurantRoutes from "./routers/restaurant.router.js";
+import restaurantModel from "./models/restaurant.model.js";
+import User from "./models/User.model.js";
 
 const app = express();
 
@@ -63,3 +65,33 @@ async function startServer() {
 }
 
 startServer();
+
+//Relationship concept
+
+// async function checkRestaurant(){
+//     try {
+//       const restaurant = await restaurantModel.findById("6a6999f78f12b9de437d0e0b").populate("owner","name email phone -_id");
+//       // console.log("restaurant",restaurant);
+//       // console.log("restaurant",restaurant.owner);
+
+//       //using manualy
+//       const owner = await User.findById(restaurant.owner);
+
+//       console.log("owner",owner);
+//     } catch (error) {
+//       console.log(error);
+//     }
+// }
+// checkRestaurant()
+
+
+async function virtualRestaurant(){
+  try {
+    const owner = await User.findById("6a5f177c9b9606c20e0bc133");
+    // console.log("restaurant owner",owner);
+    console.log("restaurant",owner.restaurant);
+  } catch (error) {
+    console.log(error)
+  }
+}
+virtualRestaurant();
