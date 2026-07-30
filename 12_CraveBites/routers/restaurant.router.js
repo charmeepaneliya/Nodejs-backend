@@ -14,4 +14,6 @@ const router = express.Router();
 
 router.post("/add",auth,checkRole("provider","admin"),upload.single("restaurantImage"),restaurantController.add);
 
+router.get("/allRestaurant",auth,restaurantController.getAllRestaurant);
+
 export default router;
