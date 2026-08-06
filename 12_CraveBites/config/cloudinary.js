@@ -11,12 +11,12 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
     
 });
-console.log("Cloud Name:", process.env.CLOUD_NAME);
-console.log("API Key:", process.env.API_KEY);
-console.log(
-  "Secret:",
-  process.env.API_SECRET ? "Available" : "Missing"
-);
+// console.log("Cloud Name:", process.env.CLOUD_NAME);
+// console.log("API Key:", process.env.API_KEY);
+// console.log(
+//   "Secret:",
+//   process.env.API_SECRET ? "Available" : "Missing"
+// );
 
 
 

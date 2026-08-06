@@ -1,4 +1,4 @@
-//thied party or external module
+//third party or external module
 import express from "express";
 
 import dotenv from "dotenv";

@@ -8,13 +8,13 @@ const userSchema = Joi.object({
     
   }),
   email: Joi.string().email().required().messages({
-    "any.required": "Name is required",
+    "any.required": "email is required",
   }),
   password: Joi.string().min(6).max(30).required().messages({
     "string.base": "password must be in string formate",
     "string.min": "password must be minmum 6 character",
     "string.max": "password must be maximum 6 character",
-    "any.required": "Name is required",
+    "any.required": "password is required",
   }),
 
   phone: Joi.string()
@@ -31,7 +31,7 @@ const userSchema = Joi.object({
     .default("customer")
     .required()
     .messages({
-      "any.required": "Name is required",
+      "any.required": "role is required",
     }),
 
     address:Joi.string().min(10).max(100).required(),
