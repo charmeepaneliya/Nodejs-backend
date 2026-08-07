@@ -74,55 +74,55 @@ All APIs were tested using Postman.
 
 User registration API tested successfully.
 
-![User Registration](postman_api_test_screenshots/User%20Registration.png)
+![User Registration](postman_api_test_screenshots/User-Registration.png)
 
 
 ### 2. User Login
 
 User login with JWT token generation.
 
-![User Login](postman_api_test_screenshots/User%20Login.png)
+![User Login](postman_api_test_screenshots/User-Login.png)
 
 
 ### 3. Get All Users
 
 Fetch all registered users.
 
-![Get All Users](postman_api_test_screenshots/Get%20All%20Users.png)
+![Get All Users](postman_api_test_screenshots/Get-All-Users.png)
 
 
 ### 4. Authenticated User
 
 Authenticated user API tested using JWT token.
 
-![Auth Login](postman_api_test_screenshots/Authenticated%20User.png)
+![Auth Login](postman_api_test_screenshots/Authenticated-User.png)
 
 
 ### 5. User Delete
 
 Customer can delete their own account.
 
-![User Delete](postman_api_test_screenshots/User%20Delete.png)
+![User Delete](postman_api_test_screenshots/User-Delete.png)
 
 
 ### 6. Admin Delete Customer
 
 Admin can delete a customer using the customer's ID.
 
-![Admin Delete Customer](postman_api_test_screenshots/Admin%20Delete%20Customer.png)
+![Admin Delete Customer](postman_api_test_screenshots/Admin-Delete-Customer.png)
 
 
 ### 7. Customer Update Own Profile
 
 Customer can update their own profile.
 
-![Customer Update](postman_api_test_screenshots/Customer%20Update%20Own%20Profile.png)
+![Customer Update](postman_api_test_screenshots/Customer-Update-Own-Profile.png)
 
 ### 8. Admin Cannot Update Customer
 
 Admin is not allowed to update customer information.
 
-![Admin Cannot Update Customer](postman_api_test_screenshots/Admin%20Cannot%20Update%20Customer.png)
+![Admin Cannot Update Customer](postman_api_test_screenshots/Admin-Cannot-Update-Customer.png)
 
 
 -------------------------
