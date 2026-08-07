@@ -38,7 +38,7 @@ This project demonstrates user **CRUD operations, secure authentication using JW
 
 ## 📁 Project Structure
 
-```text
+
 jwt-auth-practical-exam/
 │
 ├── config/
