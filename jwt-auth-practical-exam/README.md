@@ -74,55 +74,55 @@ All APIs were tested using Postman.
 
 User registration API tested successfully.
 
-![User Registration](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 210856.png)
+![User Registration](postman_api_test_screenshots/User%20Registration.png)
 
 
 ### 2. User Login
 
 User login with JWT token generation.
 
-![User Login](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 210944.png)
+![User Login](postman_api_test_screenshots/User%20Login.png)
 
 
 ### 3. Get All Users
 
 Fetch all registered users.
 
-![Get All Users](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 211529.png)
+![Get All Users](postman_api_test_screenshots/Get%20All%20Users.png)
 
 
 ### 4. Authenticated User
 
 Authenticated user API tested using JWT token.
 
-![Auth Login](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 211011.png)
+![Auth Login](postman_api_test_screenshots/Authenticated%20User.png)
 
 
 ### 5. User Delete
 
 Customer can delete their own account.
 
-![User Delete](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 212014.png)
+![User Delete](postman_api_test_screenshots/User%20Delete.png)
 
 
 ### 6. Admin Delete Customer
 
 Admin can delete a customer using the customer's ID.
 
-![Admin Delete Customer](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 220522.png)
+![Admin Delete Customer](postman_api_test_screenshots/Admin%20Delete%20Customer.png)
 
 
 ### 7. Customer Update Own Profile
 
 Customer can update their own profile.
 
-![Customer Update](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 222746.png)
+![Customer Update](postman_api_test_screenshots/Customer%20Update%20Own%20Profile.png)
 
 ### 8. Admin Cannot Update Customer
 
 Admin is not allowed to update customer information.
 
-![Admin Cannot Update Customer](c:\Nodejs-backend\postman-screenshots-practical\Screenshot 2026-08-06 223107(1).png)
+![Admin Cannot Update Customer](postman_api_test_screenshots/Admin%20Cannot%20Update%20Customer.png)
 
 
 -------------------------
