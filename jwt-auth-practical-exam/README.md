@@ -74,55 +74,63 @@ All APIs were tested using Postman.
 
 User registration API tested successfully.
 
-![User Registration](postman_api_test_screenshots/User-Registration.png)
+![User Registration](./postman_api_test_screenshots/User-Registration.png)
 
+----------------------
 
 ### 2. User Login
 
 User login with JWT token generation.
 
-![User Login](postman_api_test_screenshots/User-Login.png)
+![User Login](./postman_api_test_screenshots/User-Login.png)
 
+---------------------
 
 ### 3. Get All Users
 
 Fetch all registered users.
 
-![Get All Users](postman_api_test_screenshots/Get-All-Users.png)
+![Get All Users](./postman_api_test_screenshots/Get-All-Users.png)
 
+---------------------------
 
 ### 4. Authenticated User
 
 Authenticated user API tested using JWT token.
 
-![Auth Login](postman_api_test_screenshots/Authenticated-User.png)
+![Auth Login](./postman_api_test_screenshots/Authenticated-User.png)
 
+------------------------
 
 ### 5. User Delete
 
 Customer can delete their own account.
 
-![User Delete](postman_api_test_screenshots/User-Delete.png)
+![User Delete](./postman_api_test_screenshots/User-Delete.png)
 
+------------------------
 
 ### 6. Admin Delete Customer
 
 Admin can delete a customer using the customer's ID.
 
-![Admin Delete Customer](postman_api_test_screenshots/Admin-Delete-Customer.png)
+![Admin Delete Customer](./postman_api_test_screenshots/Admin-Delete-Customer.png)
 
+--------------------------
 
 ### 7. Customer Update Own Profile
 
 Customer can update their own profile.
 
-![Customer Update](postman_api_test_screenshots/Customer-Update-Own-Profile.png)
+![Customer Update](./postman_api_test_screenshots/Customer-Update-Own-Profile.png)
+
+----------------------------
 
 ### 8. Admin Cannot Update Customer
 
 Admin is not allowed to update customer information.
 
-![Admin Cannot Update Customer](postman_api_test_screenshots/Admin-Cannot-Update-Customer.png)
+![Admin Cannot Update Customer](./postman_api_test_screenshots/Admin-Cannot-Update-Customer.png)
 
 
 -------------------------
@@ -135,3 +143,9 @@ The project supports two roles:
 - **Admin** – Can manage customers, including deleting customer accounts.
 
 Access to APIs is controlled using JWT authentication and role-based middleware.
+
+## 👩‍💻 Author
+
+**Charmee Paneliya**
+
+Full Stack Developer
