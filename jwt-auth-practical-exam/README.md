@@ -38,7 +38,7 @@ This project demonstrates user **CRUD operations, secure authentication using JW
 
 ## 📁 Project Structure
 
-
+```text
 jwt-auth-practical-exam/
 │
 ├── config/
@@ -64,7 +64,10 @@ jwt-auth-practical-exam/
 ├── package-lock.json
 └── server.js
 
+```
 -------------------------------------------------------------------------------------
+
+
 
 ## 📸 Postman API Testing
 
