@@ -7,17 +7,24 @@ import dotenv from "dotenv";
 dotenv.config({path:"./.env"});
 
 //local modules
+import userRouter from "./routers/user.routes.js";
+import blogRouter from "./routers/blog.routs.js";
 
 //middleware //local methods
 import HttpError from "./middleware/HttpError.js";
 import connectDB from "./config/db.js";
 
 const app = express();
+app.use(express.json());
 
 //server check
 app.get("/",(req,res)=>{
     res.json({message:"Blogify API is running"});
 });
+
+app.use("/user",userRouter);
+app.use("/blog",blogRouter);
+
 
 //if route not found
 app.use((req,res,next)=>{

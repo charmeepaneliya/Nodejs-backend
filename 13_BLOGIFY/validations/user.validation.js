@@ -36,8 +36,8 @@ const registerSchema = Joi.object({
     address:Joi.string().min(10).max(100).required(),
 });
 
-export const updateUserSchema = userSchema
+export const updateUserSchema = registerSchema
 .fork(["name","phone","address"],(schema)=>schema.optional())
 .fork(["email","password","role"],(schema)=>schema.forbidden());
 
-export default userSchema;
+export default registerSchema;
