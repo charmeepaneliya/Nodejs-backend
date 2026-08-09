@@ -68,7 +68,7 @@ Creates a new user account with validated data and encrypted password.
 
 POST /user/add
 
-[!user add](./postman_api_test_screenshots/add-user.png)
+![user add](./postman_api_test_screenshots/add-user.png)
 
 ----
 
@@ -76,7 +76,7 @@ User Login
 
 Authenticates the user and generates a JWT token.
 
-[!user login](./postman_api_test_screenshots/user-login.png)
+![user login](./postman_api_test_screenshots/user-login.png)
 
 ----
 
@@ -84,7 +84,7 @@ Auth Login
 
 Checks the currently authenticated user using the JWT Bearer token.
 
-[!auth login](./postman_api_test_screenshots/auth-login.png)
+![auth login](./postman_api_test_screenshots/auth-login.png)
 
 ----
 
@@ -92,7 +92,7 @@ Update Own Account
 
 A logged-in user can update their allowed account information.
 
-[!update user acc](./postman_api_test_screenshots/update-acc-by-user.png)
+![update user acc](./postman_api_test_screenshots/update-acc-by-user.png)
 
 ----
 
@@ -100,7 +100,7 @@ Delete Own Account
 
 A logged-in user can delete their own account.
 
-[!delete acc](./postman_api_test_screenshots/delete-acc-by-user.png)
+![delete acc](./postman_api_test_screenshots/delete-acc-by-user.png)
 
 ----
 
@@ -110,7 +110,7 @@ Logout From Current Device
 
 Removes the current JWT token while keeping other active sessions.
 
-[!logout](./postman_api_test_screenshots/user-logout.png)
+![logout](./postman_api_test_screenshots/user-logout.png)
 
 ----
 
@@ -118,7 +118,7 @@ Logout From All Devices
 
 Removes all stored JWT tokens and logs the user out from all devices.
 
-[!logout from all device](./postman_api_test_screenshots/user-logout-from-all-device.png)
+![logout from all device](./postman_api_test_screenshots/user-logout-from-all-device.png)
 
 ----
 
@@ -129,7 +129,7 @@ Add Blog
 
 Authenticated users can create blog posts with an optional image.
 
-[!blog add](./postman_api_test_screenshots/add-blog.png)
+![blog add](./postman_api_test_screenshots/add-blog.png)
 
 Supports:
 
@@ -146,7 +146,7 @@ Get All Blogs
 
 Fetches all available blogs with author information.
 
-[!getAllBlogs](./postman_api_test_screenshots/get-all-blog.png)
+![getAllBlogs](./postman_api_test_screenshots/get-all-blog.png)
 
 ----
 
@@ -155,7 +155,7 @@ Get Blog By ID
 
 Fetches a specific blog using its ID.
 
-[!GET /blog/blog/:id](./postman_api_test_screenshots/get-blog-by-id.png)
+![GET /blog/blog/:id](./postman_api_test_screenshots/get-blog-by-id.png)
 
 ----
 
@@ -164,7 +164,7 @@ Update Blog
 
 A user can update only their own blog.
 
-[!PATCH /blog/blog/:id](./postman_api_test_screenshots/update-blog.png)
+![PATCH /blog/blog/:id](./postman_api_test_screenshots/update-blog.png)
 
 ----
 
@@ -173,7 +173,7 @@ Delete Blog
 
 A user can delete only their own blog. The associated Cloudinary image is also removed.
 
-[!DELETE /blog/blog/:id](./postman_api_test_screenshots/delete-blog.png)
+![DELETE /blog/blog/:id](./postman_api_test_screenshots/delete-blog.png)
 
 ----
 
@@ -205,12 +205,12 @@ Admin – Get All Users
 
 get all user by admin
 
-[!GET /user/allUsers](./postman_api_test_screenshots/get-all-users-by-admin.png)
+![GET /user/allUsers](./postman_api_test_screenshots/get-all-users-by-admin.png)
 
 
 get-all-user-by-user
 
-[!GET /user/allUsers](./postman_api_test_screenshots/getAllUser-by-user.png)
+![GET /user/allUsers](./postman_api_test_screenshots/getAllUser-by-user.png)
 
 ----
 
@@ -218,12 +218,12 @@ Admin – Update User
 
 user-update-by-admin
 
-[!PATCH /user/update/:id](./postman_api_test_screenshots/user-update-by-admin.png)
+![PATCH /user/update/:id](./postman_api_test_screenshots/user-update-by-admin.png)
 
 
 admin-update-by-user
 
-[!admin-update-by-user](./postman_api_test_screenshots/admin-update-by-user.png)
+![admin-update-by-user](./postman_api_test_screenshots/admin-update-by-user.png)
 
 ----
 
@@ -231,11 +231,11 @@ Admin – Delete User
 
 delete-admin-acc-by-user
 
-[!DELETE /user/admin/deleteUser/:id](./postman_api_test_screenshots/delete-admin-acc-by-user.png)
+![DELETE /user/admin/deleteUser/:id](./postman_api_test_screenshots/delete-admin-acc-by-user.png)
 
 delete-user-acc-by-admin
 
-[!DELETE /user/admin/deleteUser/:id](./postman_api_test_screenshots/delete-user-acc-by-admin.png)
+![DELETE /user/admin/deleteUser/:id](./postman_api_test_screenshots/delete-user-acc-by-admin.png)
 
 ----
 
