@@ -200,4 +200,31 @@ const deleteUserByAdmin = async(req,res,next)=>{
   }
 }
 
-export default { add, login, getAllUsers, authLogin, updateUser , deleteUser , updateUserByAdmin, deleteUserByAdmin};
+const logOut = async (req, res, next) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((t) => t.token != req.token);
+    await req.user.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "user log out successfully!" });
+  } catch (error) {
+    return next(new HttpError(error.message, 500));
+  }
+};
+
+const logOutAll = async (req, res, next) => {
+  try {
+    req.user.tokens = [];
+
+    await req.user.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "user log out from all device" });
+  } catch (error) {
+    return next(new HttpError(error.message, 500));
+  }
+};
+
+export default { add, login, getAllUsers, authLogin, updateUser , deleteUser , updateUserByAdmin, deleteUserByAdmin,logOut,logOutAll};

@@ -19,6 +19,10 @@ router.post("/add",upload.single("profilePic"),validate(userSchema),userControll
 
 router.post("/login",userController.login);
 
+router.post("/logOut",auth,userController.logOut);
+
+router.post("/logOutAll",auth,userController.logOutAll);
+
 
 router.post("/authLogin",auth,userController.authLogin);
 
