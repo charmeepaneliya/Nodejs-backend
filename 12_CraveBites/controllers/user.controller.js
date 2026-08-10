@@ -3,6 +3,9 @@ import HttpError from "../middleware/HttpError.js";
 import User from "../models/User.model.js";
 import bcrypt from "bcryptjs";
 
+import sendMail from "../utils/sendEmail.js";
+import emailTemplate from "../template/emailTemplate.js";
+
 const add = async (req, res, next) => {
   try {
     const { name, email, password, role, phone, isVarified, address } =
@@ -21,12 +24,13 @@ const add = async (req, res, next) => {
     const user = new User(newUser);
     await user.save();
 
+    await sendMail(email, "welcome to CraveBites", emailTemplate(name));
+
     res.status(201).json({ success: true, user });
   } catch (error) {
     next(new HttpError(error.message, 500));
   }
 };
-
 
 const login = async (req, res, next) => {
   try {
@@ -145,8 +149,8 @@ const updateUserByAdmin = async (req, res, next) => {
     if (!admiUpdateUser) {
       return next(new HttpError("user not found", 404));
     }
-    if(!admiUpdateUser.role !== "customer"){
-      return next(new HttpError("only customers can be updated",400));
+    if (!admiUpdateUser.role !== "customer") {
+      return next(new HttpError("only customers can be updated", 400));
     }
     const updates = Object.keys(req.body);
     const allowedFields = ["name", "phone", "address"];
@@ -163,45 +167,49 @@ const updateUserByAdmin = async (req, res, next) => {
       TravelPackage[update] = req.body[update];
     });
 
-    await TravelPackage.save();
+    await admiUpdateUser.save();
 
     res.status(200).json({
       success: true,
       message: "package data updated successfully",
-      TravelPackage,
+      admiUpdateUser,
     });
   } catch (error) {
     next(new HttpError(error.message, 500));
   }
 };
 
-const deleteUser = async(req,res,next)=>{
+const deleteUser = async (req, res, next) => {
   try {
     const user = req.user;
-     await user.deleteOne();
+    await user.deleteOne();
 
-     res.status(200).json({success:true,message:"user deleted successfully!"});
+    res
+      .status(200)
+      .json({ success: true, message: "user deleted successfully!" });
   } catch (error) {
     next(new HttpError(error.message, 500));
   }
-}
+};
 
-const deleteUserByDelete = async(req,res,next)=>{
+const deleteUserByDelete = async (req, res, next) => {
   try {
     const id = req.params.id || req.user.id;
 
     const user = await User.findById(id);
 
-    if(!user){
-      return next(new HttpError("user not found",404));
+    if (!user) {
+      return next(new HttpError("user not found", 404));
     }
     await User.findByIdAndDelete(id);
 
-    res.status(200).json({success:true,message:"customer deleted successfully"});
+    res
+      .status(200)
+      .json({ success: true, message: "customer deleted successfully" });
   } catch (error) {
     next(new HttpError(error.message, 500));
   }
-}
+};
 export default {
   add,
   login,
@@ -212,5 +220,5 @@ export default {
   updateUser,
   updateUserByAdmin,
   deleteUser,
-  deleteUserByDelete
+  deleteUserByDelete,
 };

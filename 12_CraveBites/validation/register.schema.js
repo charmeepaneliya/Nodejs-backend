@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 const userSchema = Joi.object({
-  name: Joi.string().min(2).max(5).trim().required().messages({
+  name: Joi.string().min(2).max(30).trim().required().messages({
     "string.base": "nmae must be in string formate",
     "string.min": "name must be minimum 2 character long ",
     "string.max": "name must be maximum  5 character long",

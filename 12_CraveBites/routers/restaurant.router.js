@@ -7,7 +7,7 @@ import restaurantController from "../controllers/restaurant.controller.js";
 //middelware
 
 import auth from "../middleware/auth.js";
-import upload from "../middleware/uploads.js";
+import {restaurantImage} from "../middleware/uploads.js";
 import checkRole from "../middleware/checkRole.js";
 
 const router = express.Router();
@@ -16,7 +16,7 @@ router.post(
   "/add",
   auth,
   checkRole("provider", "admin"),
-  upload.single("restaurantImage"),
+  restaurantImage.single("restaurantImage"),
   restaurantController.add,
 );
 

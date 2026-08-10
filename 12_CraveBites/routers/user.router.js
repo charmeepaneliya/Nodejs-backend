@@ -6,11 +6,12 @@ import userController from "../controllers/user.controller.js";
 //middleware
 import auth from "../middleware/auth.js";
 import checkRole from "../middleware/checkRole.js";
+import { profilePic } from "../middleware/uploads.js";
 
 //validation
 import validate from "../middleware/validation.js";
 import userSchema from "../validation/register.schema.js";
-import upload from "../middleware/uploads.js";
+
 
 
 //routers
@@ -21,7 +22,7 @@ const router = express.Router();
 
 router.post(
   "/add",
-  upload.single("profilePic"),
+  profilePic.single("profilePic"),
   validate(userSchema),
   userController.add
 );
