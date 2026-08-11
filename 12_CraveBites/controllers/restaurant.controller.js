@@ -2,6 +2,9 @@ import restaurantModel from "../models/restaurant.model.js";
 
 import HttpError from "../middleware/HttpError.js";
 
+import sendMail from "../utils/sendEmail.js";
+import restaurantEmailTemplate from "../template/restaurentEmailTemplate.js";
+
 const add = async (req, res, next) => {
   try {
     const {
@@ -29,6 +32,12 @@ const add = async (req, res, next) => {
       cloudinary_Id: req.file?.filename || null,
       owner: req.user._id,
     });
+
+    await sendMail(
+      req.user.email,"Restaurant added seccessfully! - CraveBites 🍔",
+      restaurantEmailTemplate(req.user.name,restaurantName),
+    );
+
     res.status(201).json({
       success: true,
       message: "restaurant added successfully!",

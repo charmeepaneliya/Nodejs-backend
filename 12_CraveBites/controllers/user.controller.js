@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 
 import sendMail from "../utils/sendEmail.js";
 import emailTemplate from "../template/emailTemplate.js";
+import loginEmailTemplate from "../template/UserloginEmailTemplate.js";
 
 const add = async (req, res, next) => {
   try {
@@ -47,6 +48,8 @@ const login = async (req, res, next) => {
     }
 
     const token = await user.generateAuthToken();
+
+    await sendMail(user.email,"New Login Detected - CraveBites 🔐",loginEmailTemplate(user.name));
 
     res.status(200).json({ success: true, user, token });
   } catch (error) {

@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     isVarified: {
       type: Boolean,
-      default: false,
+      // default: false,
     },
     address:{
       type:String,

@@ -43,6 +43,12 @@ router.patch("/update", auth, userController.updateUser);
 
 router.delete("/delete",auth,userController.deleteUser);
 
+//admin can user data update and delete
+
+router.patch("/update/:id",auth,checkRole("admin"),userController.updateUserByAdmin);
+
+router.delete("/delete/:id",auth,checkRole("admin"),userController.deleteUserByDelete);
+
 
 
 

@@ -1,7 +1,7 @@
-import { required } from "joi";
+
 
 import mongoose from "mongoose";
-import cloudinary from "../config/cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
 const providerSchema = new mongoose.Schema(
   {
