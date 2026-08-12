@@ -14,8 +14,13 @@ import connectDB from "./config/db.js";
 import userRouter from "./routers/user.router.js";
 import adminRouter from "./routers/admin.router.js";
 import restaurantRoutes from "./routers/restaurant.router.js";
+
+import foodRouter from "./routers/food.router.js";
+
+// models
 import restaurantModel from "./models/restaurant.model.js";
 import User from "./models/User.model.js";
+
 
 const app = express();
 
@@ -24,6 +29,7 @@ app.use(express.json());
 app.use("/user",userRouter);
 app.use("/admin",adminRouter);
 app.use("/restuarant",restaurantRoutes);
+app.use("/food",foodRouter);
 
 //server check
 app.get("/",(req,res)=>{

@@ -92,4 +92,23 @@ export const documents = createUploads({
   mimetype: ["application/pdf"],
 });
 
+export const foodImage = createUploads({
+  folder: "craveBites/foodImage",
+  transformation: [
+    {
+      height: 800,
+      width: 800,
+      crop: "limit",
+    },
+    {
+      fetch_format: "webp",
+    },
+    {
+      quality: "auto",
+    },
+  ],
+  allowedFormats: ["jpg", "jpeg", "png", "webp"],
+  mimetype: ["image/jpeg", "image/png", "image/jpg"],
+});
+
 export default createUploads;
