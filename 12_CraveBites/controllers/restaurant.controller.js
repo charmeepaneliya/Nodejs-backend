@@ -50,7 +50,7 @@ const add = async (req, res, next) => {
 
 const getAllRestaurant = async (req, res, next) => {
   try {
-    const {
+    let {
       page = 1,
       limlit = 10,
       isOpen,

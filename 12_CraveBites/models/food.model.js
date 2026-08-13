@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import cloudinary from "../config/cloudinary.js";
 
 
+
 const foodSchema = new mongoose.Schema(
   {
     name: {
@@ -11,8 +12,7 @@ const foodSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
-      trim: true,
+      
     },
     price: {
       type: Number,
@@ -50,6 +50,16 @@ const foodSchema = new mongoose.Schema(
     cloudinary_id: {
       type: [String],
       required: true,
+    },
+    providerName:{
+      type:mongoose.Schema.Types.ObjectId,
+     
+      ref:"Provider",
+    },
+    preparingTime:{
+      type:Number,
+      min:1,
+      max:30,
     },
   },
   {

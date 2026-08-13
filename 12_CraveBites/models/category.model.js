@@ -37,19 +37,19 @@ const foodCategorySchema = new mongoose.Schema({
     type:String,
     required:true,
   },
-  owner:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"User",
-    required:true,
-  },
-  isAvailable:{
-    type:Boolean,
-    default:true,
-  },
-  restaurant:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Restaurant"
-  }
+  // owner:{
+  //   type:mongoose.Schema.Types.ObjectId,
+  //   ref:"User",
+  //   required:true,
+  // },
+  // isAvailable:{
+  //   type:Boolean,
+  //   default:true,
+  // },
+  // restaurant:{
+  //   type:mongoose.Schema.Types.ObjectId,
+  //   ref:"Restaurant"
+  // }
 },{
     timestamps:true,
 });

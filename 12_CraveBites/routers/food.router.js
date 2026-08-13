@@ -7,4 +7,6 @@ const router = express.Router();
 
 router.post("/addFood",foodImage.array("foodImage",5),foodController.add);
 
+router.get("/allFood",foodController.getAllFood);
+
 export default router;
