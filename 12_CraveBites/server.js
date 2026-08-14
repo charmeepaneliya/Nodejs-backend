@@ -1,5 +1,9 @@
 //third party or external module
 import express from "express";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import hpp from "hpp";
+import cors from "cors";
 
 import dotenv from "dotenv";
 
@@ -23,8 +27,19 @@ import User from "./models/User.model.js";
 
 
 const app = express();
+app.use(helmet());
+app.use(hpp());
+app.use(cors());
 
 app.use(express.json());
+
+app.use(rateLimit());
+const limiter = rateLimit({
+  windowMs:15*60*1000,
+  max:100,
+});
+app.use(limiter);
+
 
 app.use("/user",userRouter);
 app.use("/admin",adminRouter);
