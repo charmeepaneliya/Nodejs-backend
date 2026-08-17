@@ -1,34 +1,51 @@
 import HttpError from "../middleware/HttpError.js";
 import Food from "../models/food.model.js";
-import order from "../models/order.model.js";
+import Order from "../models/order.model.js";
 
-const add = async (req, res, next) => {
+const orderAdd = async (req, res, next) => {
   try {
-    const { restaurant, items, status, address, phone } = req.body;
+    const {customer, restaurant, items, status, address, phone } = req.body;
     let totalAmount = 0;
-    const item = await Food.findById(item.Food);
-    if (!item) {
-      return next(new HttpError("item not found", 404));
+    
+    const foodIds = items.map((item)=>{
+      return item.food.toString();
+    });
+
+    const foods = await Food.find({
+      _id:{$in:foodIds},
+
+    });
+
+    if(foods.length !== items.length){
+      return next(new HttpError("One or more food items not found",404));
     }
 
-    //totalAmount = quantity * price
+    const total = items.map((item)=>{
+      const food = foods.find((f)=>f._id.toString() === item.food.toString());
 
-    totalAmount = totalAmount + item.price * item.quantity;
+      totalAmount += food.price * item.quantity;
+    });
 
-    const order = new Order({
+    
+
+    const newOrder = await Order.create({
+      customer:req.user._id,
       restaurant,
       items,
+      status,
       totalAmount,
       address,
       phone,
     });
-    await order.save();
+    await newOrder.save();
+
+    const orderData = await Order.findById(newOrder._id).populate("items.food");
     res
       .status(201)
-      .json({ success: true, message: "Order added successfully!", order });
+      .json({ success: true, message: "Order added successfully!", order:orderData });
   } catch (error) {
     return next(new HttpError(error.message, 500));
   }
 };
 
-export default { add };
+export default { orderAdd };

@@ -6,7 +6,10 @@ const auth = async (req, res, next) => {
   try {
     const authHeader = req.header("Authorization");
     if (!authHeader) {
-      return next(new HttpError("auth header is required"));
+      return next(new HttpError("auth header is required",401));
+    }
+    if(!authHeader.startsWith("Bearer ")){
+       return next(new HttpError("Bearer token is required", 401));
     }
     const token = authHeader.replace("Bearer ","");
 
