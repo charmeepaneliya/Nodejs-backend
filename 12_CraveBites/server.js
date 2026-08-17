@@ -18,6 +18,7 @@ import connectDB from "./config/db.js";
 import userRouter from "./routers/user.router.js";
 import adminRouter from "./routers/admin.router.js";
 import restaurantRoutes from "./routers/restaurant.router.js";
+import orderRouter from "./routers/order.route.js";
 
 import foodRouter from "./routers/food.router.js";
 
@@ -45,6 +46,7 @@ app.use("/user",userRouter);
 app.use("/admin",adminRouter);
 app.use("/restuarant",restaurantRoutes);
 app.use("/food",foodRouter);
+app.use("/order",orderRouter);
 
 //server check
 app.get("/",(req,res)=>{
