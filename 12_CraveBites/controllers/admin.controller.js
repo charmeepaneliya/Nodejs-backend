@@ -3,6 +3,8 @@ import User from "../models/User.model.js";
 import HttpError from "../middleware/HttpError.js";
 import restaurantModel from "../models/restaurant.model.js";
 import Provider from "../models/provider.model.js";
+import Food from "../models/food.model.js";
+import Order from "../models/order.model.js";
 
 const getAllVerifiedData = async (req, res, next) => {
   try {
@@ -20,12 +22,16 @@ const getAllVerifiedData = async (req, res, next) => {
 
       res
         .status(200)
-        .json({ success: true, message: "verified customer data found",customer });
+        .json({
+          success: true,
+          message: "verified customer data found",
+          customer,
+        });
     }
 
     if (role === "admin") {
       const admin = await User.find({
-        role:"admin",
+        role: "admin",
         isVarified: true,
       });
 
@@ -35,12 +41,12 @@ const getAllVerifiedData = async (req, res, next) => {
 
       res
         .status(200)
-        .json({ success: true, message: "verified admin data found",admin });
+        .json({ success: true, message: "verified admin data found", admin });
     }
 
     if (role === "provider") {
       const provider = await Provider.find({
-        role:"provider",
+        role: "provider",
         isVarified: true,
       });
       if (provider.length === 0) {
@@ -48,7 +54,11 @@ const getAllVerifiedData = async (req, res, next) => {
       }
       res
         .status(200)
-        .json({ success: true, message: "verified provider data found",provider});
+        .json({
+          success: true,
+          message: "verified provider data found",
+          provider,
+        });
     }
     return next(new HttpError("Invalid role", 400));
   } catch (error) {
@@ -114,4 +124,56 @@ const getAllVerifiedData = async (req, res, next) => {
 //   }
 // };
 
-export default { getAllVerifiedData };
+const dashboardStatic = async (req, res, next) => {
+  try {
+    const user = await User.countDocuments();
+
+    const restaurant = await restaurantModel.countDocuments();
+
+    const provider = await Provider.countDocuments();
+
+    const food = await Food.countDocuments();
+
+    const order = Order.countDocuments();
+
+    const totalRevenue = await Order.aggregate([
+      {
+        $match: {
+          status: "delivered",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: {
+            $sum: "$totalAmount",
+          },
+          totalOrders:{
+            $sum:1,
+          }
+        },
+      },
+
+      
+    ]);
+
+    const orderStatus = await Order.aggregate([
+      {
+        $group:{
+          _id:"$status",
+          total:{
+            $sum:1
+          }
+        }
+      }
+    ]) ;
+
+   
+
+    res.status(200).json({success:true,message:"dDashboard statistics fetched successfully!",totalRevenue,orderStatus})
+  } catch (error) {
+    return next(new HttpError(error.message));
+  }
+};
+
+export default { getAllVerifiedData, dashboardStatic };

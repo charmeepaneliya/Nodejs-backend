@@ -17,8 +17,17 @@ import upload from "../middleware/uploads.js";
 
 const router = express.Router();
 
+router.get("/test", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Admin route working",
+  });
+});
 
-router.get("/verified",auth,checkRole("admin"),adminController.getAllVerifiedData)
+
+router.get("/verified",auth,checkRole("admin"),adminController.getAllVerifiedData);
+
+router.get("/dashboard",auth,checkRole("admin"),adminController.dashboardStatic);
 
 export default router;
 
