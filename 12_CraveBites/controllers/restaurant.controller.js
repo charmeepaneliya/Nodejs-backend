@@ -60,7 +60,7 @@ const getAllRestaurant = async (req, res, next) => {
     } = req.query;
 
     page = Number(page);
-    limit = Number(limit);
+    limlit = Number(limlit);
 
     const filter = {};
 
@@ -82,7 +82,7 @@ const getAllRestaurant = async (req, res, next) => {
       .find(filter)
       .populate("owner", "name email address -_id")
       .sort(sortoption)
-      .skip((page - 1) * limit)
+      .skip((page - 1) * limlit)
       .lean();
 
     if (restaurant.length === 0) {

@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import sendMail from "../utils/sendEmail.js";
 import emailTemplate from "../template/emailTemplate.js";
 import loginEmailTemplate from "../template/UserloginEmailTemplate.js";
+import auditLogger from "../middleware/auditLogger.js";
 
 const add = async (req, res, next) => {
   try {
@@ -49,9 +50,22 @@ const login = async (req, res, next) => {
 
     const token = await user.generateAuthToken();
 
-    await sendMail(user.email,"New Login Detected - CraveBites 🔐",loginEmailTemplate(user.name));
+    await sendMail(
+      user.email,
+      "New Login Detected - CraveBites 🔐",
+      loginEmailTemplate(user.name),
+    );
 
     res.status(200).json({ success: true, user, token });
+
+    await auditLogger({
+      action: "USER_LOGIN",
+      performedBy: user._id,
+      module: "user",
+      targetedId: user._id,
+      Ip: req.ip,
+      userAgent: req.get("user-agent"),
+    });
   } catch (error) {
     next(new HttpError(error.message, 500));
   }
@@ -60,14 +74,14 @@ const getAllUsers = async (req, res, next) => {
   try {
     const user = req.user;
 
-    if (users.length === 0) {
+    if (user.length === 0) {
       return next(new HttpError("no user data found", 404));
     }
     res.status(200).json({
       success: true,
       message: "all user data fetched successfully!",
       total: user.length,
-      users,
+      user,
     });
   } catch (error) {
     return next(new HttpError(error.message, 500));

@@ -19,6 +19,7 @@ import userRouter from "./routers/user.router.js";
 import adminRouter from "./routers/admin.router.js";
 import restaurantRoutes from "./routers/restaurant.router.js";
 import orderRouter from "./routers/order.route.js";
+import providerRouter from "./routers/provider.router.js";
 
 import foodRouter from "./routers/food.router.js";
 
@@ -34,12 +35,12 @@ app.use(cors());
 
 app.use(express.json());
 
-// app.use(rateLimit());
-// const limiter = rateLimit({
-//   windowMs:15*60*1000,
-//   max:100,
-// });
-// app.use(limiter);
+app.use(rateLimit());
+const limiter = rateLimit({
+  windowMs:15*60*1000,
+  max:100,
+});
+app.use(limiter);
 
 
 app.use("/user",userRouter);
@@ -47,7 +48,7 @@ app.use("/admin",adminRouter);
 app.use("/restuarant",restaurantRoutes);
 app.use("/food",foodRouter);
 app.use("/order",orderRouter);
-
+app.use("/provider",providerRouter);
 //server check
 app.get("/",(req,res)=>{
     res.json("hello from server");

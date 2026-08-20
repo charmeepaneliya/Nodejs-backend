@@ -20,13 +20,11 @@ const getAllVerifiedData = async (req, res, next) => {
         return next(new HttpError("No verified customer found", 404));
       }
 
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "verified customer data found",
-          customer,
-        });
+      res.status(200).json({
+        success: true,
+        message: "verified customer data found",
+        customer,
+      });
     }
 
     if (role === "admin") {
@@ -52,13 +50,11 @@ const getAllVerifiedData = async (req, res, next) => {
       if (provider.length === 0) {
         return next(new HttpError("No verified provider found", 404));
       }
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "verified provider data found",
-          provider,
-        });
+      res.status(200).json({
+        success: true,
+        message: "verified provider data found",
+        provider,
+      });
     }
     return next(new HttpError("Invalid role", 400));
   } catch (error) {
@@ -126,15 +122,48 @@ const getAllVerifiedData = async (req, res, next) => {
 
 const dashboardStatic = async (req, res, next) => {
   try {
-    const user = await User.countDocuments();
+    const totalUser = await User.countDocuments();
+
+    const totalCustomer = await User.countDocuments({ role: "customer" });
 
     const restaurant = await restaurantModel.countDocuments();
 
     const provider = await Provider.countDocuments();
 
-    const food = await Food.countDocuments();
+    const totalApprovedProvider = await User.countDocuments({
+      role: "provider",
+      isVerified: true,
+    });
 
-    const order = Order.countDocuments();
+    const totalPendingProvider = await User.countDocuments({
+      role: "provider",
+      isVerified: false,
+    });
+
+    const totalRestaurant = await restaurantModel.countDocuments();
+
+    const totalPendingRestaurant = await restaurantModel.countDocuments({
+      isVerified: false,
+    });
+
+    const totalFoodItems = await Food.countDocuments();
+
+    const totalApprovedFoodItems = await Food.countDocuments({
+      isVerified: true,
+    });
+
+    const totalPendingFoodItems = await Food.countDocuments({
+      isVerified: false,
+    });
+
+    const totalBookings = await Order.aggregate([
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
 
     const totalRevenue = await Order.aggregate([
       {
@@ -145,32 +174,35 @@ const dashboardStatic = async (req, res, next) => {
       {
         $group: {
           _id: null,
-          totalRevenue: {
-            $sum: "$totalAmount",
-          },
-          totalOrders:{
-            $sum:1,
-          }
+          revenue: { $sum: "$totalAmount" },
         },
       },
-
-      
     ]);
 
-    const orderStatus = await Order.aggregate([
-      {
-        $group:{
-          _id:"$status",
-          total:{
-            $sum:1
-          }
-        }
-      }
-    ]) ;
+    // const orderStatus = await Order.aggregate([
+    //   {
+    //     $group: {
+    //       _id: "$status",
+    //       total: {
+    //         $sum: 1,
+    //       },
+    //     },
+    //   },
+    // ]);
 
-   
-
-    res.status(200).json({success:true,message:"dDashboard statistics fetched successfully!",totalRevenue,orderStatus})
+    res.status(200).json({
+      success: true,
+      message: "Dashboard data fetched successfully!",
+      totalBookings,
+      totalRevenue,
+      totalPendingFoodItems,
+      totalFoodItems,
+      totalApprovedFoodItems,
+      totalRestaurant,
+      totalPendingRestaurant,
+      totalApprovedProvider,
+      totalPendingProvider,
+    });
   } catch (error) {
     return next(new HttpError(error.message));
   }
