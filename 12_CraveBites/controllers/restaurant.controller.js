@@ -110,6 +110,10 @@ const updateRestaurant = async (req, res, next) => {
       return next(new HttpError("Restaurant not found", 404));
     }
 
+    if(req.user.role !== "admin" && req.user._id.toString() !== restaurant.owner.toString()){
+      return next(new HttpError("Access denied",403));
+    }
+
     const updates = Object.keys(req.body);
 
     const allowedFields = [
@@ -156,6 +160,11 @@ const deleteRestaurant = async (req, res, next) => {
     const restaurant = await restaurantModel.findById(id);
     if (!restaurant) {
       return next(new HttpError("Restaurant not found", 404));
+    }
+
+    
+    if(req.user.role !== "admin" && req.user._id.toString() !== restaurant.owner.toString()){
+      return next(new HttpError("Access denied",403));
     }
 
     await restaurant.deleteOne();

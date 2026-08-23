@@ -72,16 +72,16 @@ const login = async (req, res, next) => {
 };
 const getAllUsers = async (req, res, next) => {
   try {
-    const user = req.user;
+    const users = await User.find();
 
-    if (user.length === 0) {
+    if (users.length === 0) {
       return next(new HttpError("no user data found", 404));
     }
     res.status(200).json({
       success: true,
       message: "all user data fetched successfully!",
-      total: user.length,
-      user,
+      total: users.length,
+      users,
     });
   } catch (error) {
     return next(new HttpError(error.message, 500));
@@ -128,13 +128,25 @@ const logOutAll = async (req, res, next) => {
     return next(new HttpError(error.message, 500));
   }
 };
+
 const updateUser = async (req, res, next) => {
   try {
-    const user = req.user;
+    const targetUser = req.params.id || req.user_id;
+
+    const user = await User.findById(targetUser);
+
+    if (!targetUser) {
+      return next(new HttpError("user not found", 404));
+    }
 
     const updates = Object.keys(req.body);
+    const allowedFields = ["name", "address", "phone", "password"];
 
-    const allowedFields = ["name", "address", "phone"];
+    if (req.user.role === "admin") {
+      allowedFields = [...allowedFields, "isVerified"];
+    }
+
+    console.log("allowed Fields", allowedFields);
 
     const isValid = updates.every((field) => allowedFields.includes(field));
 
@@ -142,9 +154,17 @@ const updateUser = async (req, res, next) => {
       return next(new HttpError("only allowed field can be updated", 400));
     }
 
+    if (req.file) {
+      if (user.cloudinary_id) {
+        await cloudinary.uploader.destroy(user.cloudinary_id);
+      }
+      user.profilePic = req.file.path;
+      user.cloudinary_id = req.file.filename;
+    }
     updates.forEach((update) => {
       user[update] = req.body[update];
     });
+
     await user.save();
 
     res.status(200).json({
@@ -156,75 +176,129 @@ const updateUser = async (req, res, next) => {
     return next(new HttpError(error.message, 500));
   }
 };
+// const updateUser = async (req, res, next) => {
+//   try {
+//     const user = req.user;
 
-const updateUserByAdmin = async (req, res, next) => {
-  try {
-    const id = req.params.id || req.user.id;
+//     const updates = Object.keys(req.body);
 
-    const admiUpdateUser = await User.findById(id);
+//     const allowedFields = ["name", "address", "phone"];
 
-    if (!admiUpdateUser) {
-      return next(new HttpError("user not found", 404));
-    }
-    if (!admiUpdateUser.role !== "customer") {
-      return next(new HttpError("only customers can be updated", 400));
-    }
-    const updates = Object.keys(req.body);
-    const allowedFields = ["name", "phone", "address"];
+//     const isValid = updates.every((field) => allowedFields.includes(field));
 
-    const isValidUpdates = updates.every((field) =>
-      allowedFields.includes(field),
-    );
+//     if (!isValid) {
+//       return next(new HttpError("only allowed field can be updated", 400));
+//     }
 
-    if (!isValidUpdates) {
-      return next(new HttpError("only allowed field can be updated", 500));
-    }
+//     updates.forEach((update) => {
+//       user[update] = req.body[update];
+//     });
+//     await user.save();
 
-    updates.forEach((update) => {
-      TravelPackage[update] = req.body[update];
-    });
+//     res.status(200).json({
+//       success: true,
+//       message: "user data updated successfully!",
+//       user,
+//     });
+//   } catch (error) {
+//     return next(new HttpError(error.message, 500));
+//   }
+// };
 
-    await admiUpdateUser.save();
+// const updateUserByAdmin = async (req, res, next) => {
+//   try {
+//     const id = req.params.id || req.user.id;
 
-    res.status(200).json({
-      success: true,
-      message: "package data updated successfully",
-      admiUpdateUser,
-    });
-  } catch (error) {
-    next(new HttpError(error.message, 500));
-  }
-};
+//     const admiUpdateUser = await User.findById(id);
+
+//     if (!admiUpdateUser) {
+//       return next(new HttpError("user not found", 404));
+//     }
+//     if (!admiUpdateUser.role !== "customer") {
+//       return next(new HttpError("only customers can be updated", 400));
+//     }
+//     const updates = Object.keys(req.body);
+//     const allowedFields = ["name", "phone", "address"];
+
+//     const isValidUpdates = updates.every((field) =>
+//       allowedFields.includes(field),
+//     );
+
+//     if (!isValidUpdates) {
+//       return next(new HttpError("only allowed field can be updated", 500));
+//     }
+
+//     updates.forEach((update) => {
+//       TravelPackage[update] = req.body[update];
+//     });
+
+//     await admiUpdateUser.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message: "package data updated successfully",
+//       admiUpdateUser,
+//     });
+//   } catch (error) {
+//     next(new HttpError(error.message, 500));
+//   }
+// };
+
+// const deleteUser = async (req, res, next) => {
+//   try {
+//     const user = req.user;
+//     await user.deleteOne();
+
+//     res
+//       .status(200)
+//       .json({ success: true, message: "user deleted successfully!" });
+//   } catch (error) {
+//     next(new HttpError(error.message, 500));
+//   }
+// };
+
+// const deleteUserByDelete = async (req, res, next) => {
+//   try {
+//     const id = req.params.id || req.user.id;
+
+//     const user = await User.findById(id);
+
+//     if (!user) {
+//       return next(new HttpError("user not found", 404));
+//     }
+//     await User.findByIdAndDelete(id);
+
+//     res
+//       .status(200)
+//       .json({ success: true, message: "customer deleted successfully" });
+//   } catch (error) {
+//     next(new HttpError(error.message, 500));
+//   }
+// };
 
 const deleteUser = async (req, res, next) => {
   try {
-    const user = req.user;
-    await user.deleteOne();
+    const targetedUser = req.params.id || req.user._id;
 
-    res
-      .status(200)
-      .json({ success: true, message: "user deleted successfully!" });
-  } catch (error) {
-    next(new HttpError(error.message, 500));
-  }
-};
-
-const deleteUserByDelete = async (req, res, next) => {
-  try {
-    const id = req.params.id || req.user.id;
-
-    const user = await User.findById(id);
+    const user = await User.findById(targetedUser);
 
     if (!user) {
       return next(new HttpError("user not found", 404));
     }
-    await User.findByIdAndDelete(id);
+    if (
+      req.user.role !== "admin" &&
+      req.user._id.toString() !== user._id.toString()
+    ) {
+      return next(new HttpError("access denied", 403));
+    }
+
+    await user.deleteOne();
 
     res
       .status(200)
-      .json({ success: true, message: "customer deleted successfully" });
+      .json({ success: true, message: "user deleted successfully" });
   } catch (error) {
-    next(new HttpError(error.message, 500));
+    return next(new HttpError(error.message, 500));
   }
 };
 export default {
@@ -235,7 +309,5 @@ export default {
   logOut,
   logOutAll,
   updateUser,
-  updateUserByAdmin,
   deleteUser,
-  deleteUserByDelete,
 };

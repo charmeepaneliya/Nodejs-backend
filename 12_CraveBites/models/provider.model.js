@@ -18,14 +18,18 @@ const providerSchema = new mongoose.Schema(
       },
     ],
 
-    documents: {
+    documents:[
+      {
       type: String,
       required: true,
     },
-    cloudinary_id: {
+    ] ,
+    cloudinary_id:[
+      {
       type: String,
       required: true,
     },
+    ] ,
     bancAccNumber: {
       type: String,
       required: true,

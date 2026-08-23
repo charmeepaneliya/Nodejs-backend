@@ -7,10 +7,12 @@ import userController from "../controllers/user.controller.js";
 import auth from "../middleware/auth.js";
 import checkRole from "../middleware/checkRole.js";
 import { profilePic } from "../middleware/uploads.js";
+import {authLimiter} from "../middleware/rateLimit.js";
 
 //validation
 import validate from "../middleware/validation.js";
-import userSchema from "../validation/register.schema.js";
+// import userSchema from "../validation/register.schema.js";
+import userSchema, {updateUserSchema} from "../validation/register.schema.js"
 
 
 
@@ -31,13 +33,13 @@ router.post("/login", userController.login);
 
 router.get("/getAllUsers", auth, userController.getAllUsers);
 
-router.post("/authLogin", auth, userController.authLogin);
+router.post("/authLogin", auth,checkRole("admin"), userController.authLogin);
 
 router.post("/logOut", auth, userController.logOut);
 
 router.post("/logOutAll", auth, userController.logOutAll);
 
-router.patch("/update", auth, userController.updateUser);
+router.patch("/update", auth, validate(updateUserSchema),userController.updateUser);
 
 
 
@@ -45,9 +47,9 @@ router.delete("/delete",auth,userController.deleteUser);
 
 //admin can user data update and delete
 
-router.patch("/update/:id",auth,checkRole("admin"),userController.updateUserByAdmin);
+// router.patch("/update/:id",auth,checkRole("admin"),userController.updateUserByAdmin);
 
-router.delete("/delete/:id",auth,checkRole("admin"),userController.deleteUserByDelete);
+// router.delete("/delete/:id",auth,checkRole("admin"),userController.deleteUserByDelete);
 
 
 
