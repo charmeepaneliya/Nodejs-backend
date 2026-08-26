@@ -1,6 +1,7 @@
 import HttpError from "../middleware/HttpError.js";
 import Food from "../models/food.model.js";
 import cloudinary from "../config/cloudinary.js";
+import restaurantModel from "../models/restaurant.model.js";
 
 const add = async (req, res, next) => {
   try {
@@ -86,20 +87,127 @@ const getAllFood = async (req, res, next) => {
         .json({ success: false, message: "food not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Food found successfully!",
-        totalFood,
-        page,
-        limit,
-        totalPages: Math.ceil(totalFood / limit),
-        foods,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Food found successfully!",
+      totalFood,
+      page,
+      limit,
+      totalPages: Math.ceil(totalFood / limit),
+      foods,
+    });
   } catch (error) {
     return next(new HttpError(error.message, 500));
   }
 };
 
-export default { add, getAllFood};
+const updateFood = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const food = await Food.findById(id);
+
+    if (!food) {
+      return next(new HttpError("Food not found", 404));
+    }
+
+    //provider -> only own restaurant.s foods
+
+    if (req.user.role === "provider") {
+      const restaurant = await Food.findOne({
+        _id: order.food,
+        owner: req.user._id,
+      });
+      if (!restaurant) {
+        return next(new HttpError("access denied", 403));
+      }
+    }
+
+    if(req.user.role !== "admin" && req.user.role !== "provider"){
+      return next(new HttpError("Access denied",403));
+    }
+
+    const updates = Object.keys(req.body);
+    
+        const allowedFields = [
+          "name",
+          "description",
+          "price",
+          "category",
+          "isAvailable",
+          "foodType",
+          "preparingTime",
+         
+        ];
+    
+        const isValid = updates.every((field) => allowedFields.includes(field));
+    
+        if (!isValid) {
+          return next(new HttpError("only allowed field can be updated", 400));
+        }
+    
+        updates.forEach((update) => {
+          food[update] = req.body[update];
+        });
+
+        await food.save();
+
+    res.status(200).json({
+      success: true,
+      message: "food data updated successfully!",
+      food,
+    });
+    
+  } catch (error) {
+    return next(new HttpError(error.message, 500));
+  }
+};
+
+const deleteFood = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const food = await Food.findById(id);
+
+    if (!food) {
+      return next(new HttpError("food not found", 404));
+    }
+    //customer -> only own food delete
+    if (
+      req.user.role === "customer" &&
+      req.user._id.toString() !== food.customer.toString()
+    ) {
+      return next(new HttpError("Access denied", 403));
+    }
+
+    //provider -> only own food's delete
+
+    if (req.user.role === "provider") {
+      const restaurant = await restaurantModel.findOne({
+        _id: food.restaurent,
+        owner: req.user._id,
+      });
+
+      if (!restaurant) {
+        return next(new HttpError("Access denied", 403));
+      }
+    }
+    // customer -> cannot delete food
+    if(req.user.role !== "admin" && req.user.role !== "provider"){
+      return next(new HttpError("Access denied",403));
+    }
+
+    //Admin -> can delete any order
+
+    await food.deleteOne();
+
+    res
+      .status(200)
+      .json({ success: true, message: "food deleted successfully!" });
+  } catch (error) {
+    return next(new HttpError(error.message, 500));
+  }
+};
+
+
+export default { add, getAllFood,updateFood,deleteFood};

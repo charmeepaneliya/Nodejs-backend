@@ -34,8 +34,9 @@ const add = async (req, res, next) => {
     });
 
     await sendMail(
-      req.user.email,"Restaurant added seccessfully! - CraveBites 🍔",
-      restaurantEmailTemplate(req.user.name,restaurantName),
+      req.user.email,
+      "Restaurant added seccessfully! - CraveBites 🍔",
+      restaurantEmailTemplate(req.user.name, restaurantName),
     );
 
     res.status(201).json({
@@ -52,7 +53,7 @@ const getAllRestaurant = async (req, res, next) => {
   try {
     let {
       page = 1,
-      limlit = 10,
+      limit = 10,
       isOpen,
       search,
       sort = "createdAt",
@@ -60,7 +61,7 @@ const getAllRestaurant = async (req, res, next) => {
     } = req.query;
 
     page = Number(page);
-    limlit = Number(limlit);
+    limit = Number(limit);
 
     const filter = {};
 
@@ -73,30 +74,28 @@ const getAllRestaurant = async (req, res, next) => {
     if (isOpen !== undefined) {
       filter.isOpen = isOpen === "true";
     }
-    // const sortoption =() =>{
-    //   [sort]="asc"?1:-1;
-    // }
-
+    
+    const sortoption = {
+      [sort]: order === "asc" ? 1 : -1,
+    };
     const totalRestaurant = await restaurantModel.countDocuments(filter);
     const restaurant = await restaurantModel
       .find(filter)
       .populate("owner", "name email address -_id")
       .sort(sortoption)
-      .skip((page - 1) * limlit)
+      .skip((page - 1) * limit)
       .lean();
 
     if (restaurant.length === 0) {
-      res.status(404).json({ success: true, message: "restaurant note found" });
+      res.status(404).json({ success: false, message: "restaurant note found" });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "restaurant founds",
-        totalRestaurant: totalRestaurant,
-        page: page,
-        restaurant,
-      });
+    res.status(200).json({
+      success: true,
+      message: "restaurant founds",
+      totalRestaurant: totalRestaurant,
+      page: page,
+      restaurant,
+    });
   } catch (error) {
     return next(new HttpError(error.message, 500));
   }
@@ -110,8 +109,11 @@ const updateRestaurant = async (req, res, next) => {
       return next(new HttpError("Restaurant not found", 404));
     }
 
-    if(req.user.role !== "admin" && req.user._id.toString() !== restaurant.owner.toString()){
-      return next(new HttpError("Access denied",403));
+    if (
+      req.user.role !== "admin" &&
+      req.user._id.toString() !== restaurant.owner.toString()
+    ) {
+      return next(new HttpError("Access denied", 403));
     }
 
     const updates = Object.keys(req.body);
@@ -162,9 +164,11 @@ const deleteRestaurant = async (req, res, next) => {
       return next(new HttpError("Restaurant not found", 404));
     }
 
-    
-    if(req.user.role !== "admin" && req.user._id.toString() !== restaurant.owner.toString()){
-      return next(new HttpError("Access denied",403));
+    if (
+      req.user.role !== "admin" &&
+      req.user._id.toString() !== restaurant.owner.toString()
+    ) {
+      return next(new HttpError("Access denied", 403));
     }
 
     await restaurant.deleteOne();
@@ -177,4 +181,4 @@ const deleteRestaurant = async (req, res, next) => {
   }
 };
 
-export default { add, getAllRestaurant, updateRestaurant,deleteRestaurant };
+export default { add, getAllRestaurant, updateRestaurant, deleteRestaurant };
