@@ -14,7 +14,7 @@ dotenv.config({path: "./.env"});
 app.use(cors());
 
 app.use(express.json());
-app.use("/student", studentRoutes);
+app.use("/", studentRoutes);
 
 app.use("/", (req, res) => {
   res.json({ message: "hello from server" });
