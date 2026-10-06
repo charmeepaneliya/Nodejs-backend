@@ -4,14 +4,17 @@ import HttpError from "./middleware/httpError.js";
 import connectDB from "./config/db.js";
 
 import studentRoutes from "./routes/studentRoutes.js";
+import dotenv from "dotenv";
 import cors from "cors";
 
 const app = express();
 
+dotenv.config({path: "./.env"});
+
 app.use(cors());
 
 app.use(express.json());
-app.use("/", studentRoutes);
+app.use("/student", studentRoutes);
 
 app.use("/", (req, res) => {
   res.json({ message: "hello from server" });
