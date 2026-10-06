@@ -4,9 +4,11 @@ import HttpError from "./middleware/httpError.js";
 import connectDB from "./config/db.js";
 
 import studentRoutes from "./routes/studentRoutes.js";
-
+import cors from "cors";
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use("/", studentRoutes);
