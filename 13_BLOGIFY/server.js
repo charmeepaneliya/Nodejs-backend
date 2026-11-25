@@ -14,7 +14,13 @@ import blogRouter from "./routers/blog.routs.js";
 import HttpError from "./middleware/HttpError.js";
 import connectDB from "./config/db.js";
 
+import cors from "cors";
+
 const app = express();
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
+
 app.use(express.json());
 
 //server check
