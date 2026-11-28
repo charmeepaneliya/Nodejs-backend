@@ -21,6 +21,8 @@ const blogSchema = Joi.object({
     "string.max": "category must be maximum  5 character long",
     "any.required": "category is required",
   }),
+
+  image:Joi.any().optional(),
 });
 
 export const updateBlogSchema = blogSchema.fork(
